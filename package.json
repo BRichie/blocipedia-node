@@ -1,0 +1,14 @@
+{
+  "name": "blocipedia-node",
+  "version": "1.0.0",
+  "description": "on: Application that allows users to create, collaborate and share wikis",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "blocipedia"
+  ],
+  "author": "BcR",
+  "license": "ISC"
+}
