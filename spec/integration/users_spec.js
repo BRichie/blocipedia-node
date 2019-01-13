@@ -36,20 +36,20 @@ describe("routes : users", () => {
     it("should create a new user with valid values and redirect", (done) => {
 
       const options = {
-        url: base + "sign_up",
+        url: `${base}sign_up`,
         form: {
           username: 'kobe',
-          email: "kobe@lakers.com",
-          password: "11111111"
+          email: "goat@lakers.com",
+          password: "LALakers",
+          passwordConfirm: "LALakers"
         }
       }
-      request.post(options,
-        (err, res, body) => {
-          User.findOne({where: {email: "kobe@lakers.com"}})
+      request.post(options, (err, res, body) => {
+          User.findOne({where: {email: "goat@lakers.com"}})
           .then((user) => {
             expect(user).not.toBeNull();
             expect(user.username).toBe("kobe");
-            expect(user.email).toBe("kobe@.lakers.com");
+            expect(user.email).toBe("goat@lakers.com");
             expect(user.id).toBe(1);
             done();
           })
@@ -57,22 +57,24 @@ describe("routes : users", () => {
             console.log(err);
             done();
           });
-        }
-      );
+        });
     });
 
     it("should not create a new user with invalid attributes and redirect", (done) => {
-      request.post(
-        {
-          url: base + "sign_up",
+      
+      const options = {
+      
+     
+        
+          url: `${base}sign_up`,
           form: {
             username: "noName",
-            email: "no",
+            email: "none",
             password: "123456789"
           }
-        },
-        (err, res, body) => {
-          User.findOne({where: {email: "no"}})
+        };
+        request.post(options, (err, res, body) => {
+          User.findOne({where: {email: "none"}})
           .then((user) => {
             expect(user).toBeNull();
             done();
@@ -86,8 +88,7 @@ describe("routes : users", () => {
     });
 
   });//End of POST 
-
-
+/*
   describe("GET /users/sign_in", () => {
 
     it("should render a view with a sign in form", (done) => {
@@ -98,5 +99,5 @@ describe("routes : users", () => {
       });
     });
 
-  });
+  });*/
 });

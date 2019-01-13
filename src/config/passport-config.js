@@ -28,12 +28,12 @@ module.exports = {
       })
     }));
 
-// #6
+
     passport.serializeUser((user, callback) => {
       callback(null, user.id);
     });
 
-// #7
+
     passport.deserializeUser((id, callback) => {
       User.findById(id)
       .then((user) => {

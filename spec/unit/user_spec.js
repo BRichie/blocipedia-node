@@ -16,11 +16,12 @@ describe("User", () => {
 
   describe("#create()", () => {
 
-    it("should create a user with a valid/unique username, email and password", (done) => {
+    it("should create a user with a valid username, email and password", (done) => {
       User.create({
         username: "kobe",
         email: "goat@lakers.com",
-        password: "LALakers"
+        password: "LALakers",
+        passwordConfirm: "LALakers"
       })
       .then((user) => {
         expect(user.username).toBe("kobe");
@@ -41,13 +42,11 @@ describe("User", () => {
         password: "1234567890"
       })
       .then((user) => {
-        // The code in this block will not be evaluated since the validation error
-        // will skip it. Instead, we'll catch the error in the catch block below
-        // and set the expectations there.
+       
         done();
       })
       .catch((err) => {
-        expect(err.message).toContain("Error: must be a valid Email and/or Username");
+        expect(err.message).toContain("Validation error: Must be a valid Email");
         done();
       });
     });
