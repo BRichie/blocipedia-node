@@ -7,6 +7,7 @@
     "dialect": "postgres",
     "logging": false,
     "operatorAliases": false
+  
   },
   "test": {
     "username": "brandonrichie",

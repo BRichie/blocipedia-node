@@ -15,7 +15,8 @@ describe("routes : wikis", () => {
       User.create({
         username: 'kobe',
         email: "kobe@lakers.com",
-        password: "1234567"
+        password: "1234567",
+  
       })
       .then((user)=>{
         this.user = user;
@@ -31,8 +32,8 @@ describe("routes : wikis", () => {
            done();
          })
          .catch((err) => {
-           console.log(err);
-           done();
+          console.log(err);
+          done();
          });
       })
     });
@@ -62,9 +63,8 @@ describe("routes : wikis", () => {
     });
   
     describe("GET /wikis", () => {
-    it("should return a status code 200", (done) => {
+    it("should return all wikis", (done) => {
         request.get(base, (err, res, body) => {
-          expect(res.statusCode).toBe(200);
           expect(err).toBeNull();
            expect(body).toContain("Wikis");
            expect(body).toContain("Hardwood Greats");
@@ -89,7 +89,8 @@ describe("routes : wikis", () => {
         url: `${base}create`,
         form: {
           title: "Tom Cruise",
-          body: "What's your favorite Tom Cruise movie?"
+          body: "What's your favorite Tom Cruise movie?",
+        
         }
       };
       it("should create a new wiki and redirect", (done) => {

@@ -1,6 +1,8 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Wiki = sequelize.define('Wiki', {
+
+    
     title:{
       type: DataTypes.STRING,
       allowNull: false
@@ -8,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     body: {
       type: DataTypes.STRING,
       allowNull: false
+    
     },
     private: {
       type: DataTypes.BOOLEAN,

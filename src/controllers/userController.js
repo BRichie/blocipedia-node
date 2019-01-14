@@ -16,7 +16,7 @@ module.exports = {
  // #2
       userQueries.createUser(newUser, (err, user) => {
         if(err){
-          req.flash("notice", "Email already associated with account");
+          req.flash("notice", "Error: Email already associated with account");
           res.redirect("/users/sign_up");
         } else {
  
@@ -34,23 +34,28 @@ module.exports = {
       },
 
       signIn(req, res, next){
-        passport.authenticate("local")(req, res, function () {
-          if(!req.user){
-            req.flash("notice", "Sign in failed. Please try again.")
+        passport.authenticate("local", function(err, user, info){
+          if(err){
+            next(err);
+          }
+          if(!user){
+            req.flash("notice", "Error: The email or password you entered is incorrect.")
             res.redirect("/users/sign_in");
-          } else {
+          }
+          req.logIn(user,function(err){
+            if(err){
+              next(err);
+            }
             req.flash("notice", "You've successfully signed in!");
             res.redirect("/");
-          }
-        })
+          });
+        })(req, res, next);
       },
-    
-   
-
-           signOut(req, res, next){
-            req.logout();
-            req.flash("notice", "You are signed out!");
-            res.redirect("/");
-          },
-      
+      signOut(req, res, next){
+        req.logout();
+        req.flash("notice", "You've successfully signed out!");
+        res.redirect("/");
+      },
+  
   }
+  

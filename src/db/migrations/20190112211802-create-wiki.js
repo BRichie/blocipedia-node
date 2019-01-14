@@ -9,11 +9,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull:false
       },
-      description: {
-        type: Sequelize.STRING
+      body: {
+        type: Sequelize.STRING,
+        allowNull:false
       },
+      private: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -41,7 +41,8 @@ describe("routes : users", () => {
           username: 'kobe',
           email: "goat@lakers.com",
           password: "LALakers",
-          passwordConfirm: "LALakers"
+          passwordConfirm: "LALakers",
+          
         }
       }
       request.post(options, (err, res, body) => {
@@ -88,7 +89,7 @@ describe("routes : users", () => {
     });
 
   });//End of POST 
-/*
+
   describe("GET /users/sign_in", () => {
 
     it("should render a view with a sign in form", (done) => {
@@ -99,5 +100,5 @@ describe("routes : users", () => {
       });
     });
 
-  });*/
+  });
 });

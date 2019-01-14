@@ -18,7 +18,7 @@ module.exports = {
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
       const msg = {
-        to: 'newUser.email',
+        to: newUser.email,
         from: 'lebron@lakeshow.com',
         subject: 'Salutations from Blocipedia',
         text: 'Thank you for joining our online community',

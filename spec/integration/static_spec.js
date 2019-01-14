@@ -3,20 +3,17 @@ const server = require("../../src/server");
 const base = "http://localhost:3000/";
 
 describe("routes : static", () => {
+   
+   describe("GET /", () => {
 
-//#1
-  describe("GET /", () => {
-
-//#2
-it("should return status code 200 and have 'Blocipedia' in the body of the response", (done) => {
-
-//#3
-      request.get(base, (err, res, body) => {
-        expect(res.statusCode).toBe(200);
-        expect(body).toContain("Blocipedia");
-        done();
+      it("should return code 200 and have Welcome to Blocipedia", (done) => {
+         request.get(base, (err, res, body) => {
+            expect(res.statusCode).toBe(200);
+            expect(res.body).toContain("Welcome to Blocipedia");
+            done();
+         });
       });
-    });
 
-  });
+   });
+
 });

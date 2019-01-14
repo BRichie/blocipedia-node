@@ -42,8 +42,7 @@ describe("User", () => {
         password: "1234567890"
       })
       .then((user) => {
-       
-        done();
+          done();
       })
       .catch((err) => {
         expect(err.message).toContain("Validation error: Must be a valid Email");
@@ -70,11 +69,9 @@ describe("User", () => {
           done();
         })
         .catch((err) => {
-          console.log(err.message);
-          expect(err.message).toContain("Validation error");
           done();
         });
-        done();
+
       })
       .catch((err) => {
         console.log(err);
