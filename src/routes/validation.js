@@ -3,7 +3,7 @@ module.exports = {
   
       if(req.method === "POST") {
 
-        req.checkBody("username", "must be 4 characters").isLength({min: 4});
+      
         req.checkBody("email", "must be a valid address").isEmail();
         req.checkBody("password", "must be at least 6 characters in length").isLength({min: 6});
         req.checkBody("passwordConfirm", "must match password").optional().matches(req.body.password);
@@ -14,6 +14,7 @@ module.exports = {
       if (errors) {
   
         req.flash("error", errors);
+        console.log("Validations errors")
         return res.redirect(303, req.headers.referer)
       } else {
         return next();

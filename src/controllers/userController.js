@@ -9,18 +9,18 @@ module.exports = {
     create(req, res, next){
       let newUser = {
         username: req.body.username,
-        email: req.body.email,
+        email: (req.body.email).toLowerCase(),
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm
       };
  // #2
       userQueries.createUser(newUser, (err, user) => {
         if(err){
-          req.flash("error", err);
+          req.flash("notice", "Email already associated with account");
           res.redirect("/users/sign_up");
         } else {
  
- // #3
+
           passport.authenticate("local")(req, res, () => {
             req.flash("notice", "You've successfully signed in!");
             res.redirect("/");
@@ -47,10 +47,10 @@ module.exports = {
     
    
 
-           /*signOut(req, res, next){
+           signOut(req, res, next){
             req.logout();
             req.flash("notice", "You are signed out!");
             res.redirect("/");
-          },*/
+          },
       
   }
