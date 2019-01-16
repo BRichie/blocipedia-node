@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const validation = require("./validation");
 const userController = require("../controllers/userController")
+const passport = require("passport");
+const flash = require("express-flash");
 
 
 router.get("/users/sign_up", userController.signUp);
