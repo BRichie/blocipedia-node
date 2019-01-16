@@ -2,6 +2,9 @@ const User = require("./models").User;
 const bcrypt = require("bcryptjs");
 const sgMail = require('@sendgrid/mail');
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+
 module.exports = {
 
   createUser(newUser, callback){
@@ -15,8 +18,6 @@ module.exports = {
     })
     .then((user) => {
 
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
       const msg = {
         to: newUser.email,
         from: 'lebron@lakeshow.com',
@@ -24,12 +25,13 @@ module.exports = {
         text: 'Thank you for joining our online community',
         html: '<strong>Start sharing!</strong>',
       };
+      //console.log(msg);
       sgMail.send(msg);
         callback(null, user);
     })
     .catch((err) => {
       callback(err);
+      console.log(err);
     })
   }
-
 }

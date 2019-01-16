@@ -10,11 +10,11 @@ module.exports = {
       },
       title: {
         type: Sequelize.STRING,
-        allowNull:false
+        allowNull: false
       },
       body: {
         type: Sequelize.STRING,
-        allowNull:false
+        allowNull: false
       },
       private: {
         type: Sequelize.BOOLEAN,
@@ -22,16 +22,22 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull: false
-      },
+        onDelete: "CASCADE",
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "id",
+          as: "userId"
+        },
 
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE
+        }
       }
     });
   },

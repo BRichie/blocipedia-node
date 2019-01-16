@@ -1,32 +1,25 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <% include ../static/partials/head.ejs %>
-    </head>
-    <body>
-        <% include ../static/partials/navbar.ejs %>
+  <head>
+    <% include ../static/partials/head.ejs %>
+  </head>
+  <body>
+    <main class="container">
+      <% include ../static/partials/navbar.ejs %>
+       <h1>Wikis</h1>
 
-        <main class="container">
+       <% if(currentUser) { %>
+          <a href="/wikis/new" class="btn btn-success">New Wiki</a>
+       <% } %>
 
-        <h1>Wikis</h1>
+      <ul class="list-group">
+        <% wikis.forEach((wiki) => { %>
+           <li class="list-group-item">
+            <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
+          </li>
+        <% }) %>
+      </ul>
 
-        <a href="/wikis/new" class="btn btn-success">New Wiki</a></p>
-
-        <ul class="list-group">
-
-            <% wikis.forEach((wiki) => { %>
-            
-            <li class="list-group-item">
-                <a href="/wikis/<%= wiki.id %>"><%= wiki.title %></a>
-            </li>
-            
-            <% }) %>
-        </ul>
-
-        </main>
-
-        <% include ../static/partials/baseScripts.ejs %>
-
-    </body>
-</html> 
-
+    </main>
+  </body>
+</html>

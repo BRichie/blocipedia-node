@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     private: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
+    
     }
   }, {});
   Wiki.associate = function(models) {

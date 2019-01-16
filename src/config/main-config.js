@@ -8,9 +8,6 @@ const flash = require("express-flash");
 const passportConfig = require("./passport-config");
 const logger = require('morgan');
 
-
-
-
 module.exports = {
   init(app, express){
 
