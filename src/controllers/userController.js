@@ -105,9 +105,6 @@ module.exports = {
       })
 
   },
-
-
-
   downgrade(req, res, next) {
     userQueries.downgradeRole(req, (err, result) => {
       if(err || result.id === undefined){
@@ -115,7 +112,7 @@ module.exports = {
           res.redirect("users/show");
       } else {
           req.flash("notice", "Success, you've switched to basic plan.");
-          res.render("users/downgradeShow", {result});
+          res.render("users/standard_role", {result});
       }
 
     })
