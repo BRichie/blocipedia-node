@@ -105,30 +105,28 @@ module.exports = {
       description: 'Premium',
       source: token,
     })
-
-    userQueries.upgradeRole(req, (err, result) => {
-      if (err || result.id === undefined) {
-        req.flash("notice", "Purchase Error, please try again.");
-        res.redirect("users/paymentDecline");
+        userQueries.upgradeRole(req, (err, result) => {
+          if(err != null || result.user.id === undefined){
+          req.flash("notice", "Upgrade unsuccessfull");
+          res.redirect("users/paymentDeclined");
       } else {
-        req.flash("notice", "Plan upgraded to premium!");
-        res.render("users/payment", {
-          result
-        });
+          req.flash("notice", "Upgrade successful.");
+          res.render("users/payment", {result});
       }
-    })
-  },
+     })
+   },
+  
+
   downgrade(req, res, next) {
-  userQueries.getUser(req.params.id, (err, user) => {
-    if (err || user === undefined) {
+  userQueries.downgradeRole(req.params.id, (err, result) => {
+    if (err != null || result.user.id === undefined) {
       req.flash("notice", "Downgrade unsuccessful.");
-      res.redirect("users/show", {user});
+      res.redirect("users/show");
     } else {
-      userQueries.downgradeRole(user);
       
-      wikiQueries.wikiNowPrivate(user);
+   
       req.flash("notice", "You've been downgraded to Standard!");
-      res.redirect("/");
+      res.render("/users/standard_role", {result});
     }
     })
   },

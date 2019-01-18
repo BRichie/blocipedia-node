@@ -53,29 +53,18 @@ module.exports = {
 
 
   upgradeRole(req, callback) {
-    return User.findById(req.user.id)
+    return User.findbyId(req.result.id)
+    
 
-      .then((user) => {
-        if (!user) {
-          return callback("User not found");
+     .then((user) => {
+       if(user.role == "standard"){
+         user.update({
+           role: "premium"
+         })
         }
-
-        user.update({
-            role: "premium"
-          }, {
-            where: {
-              id: user.id
-            }
-          })
-
-          .then((user) => {
-            callback(null, user);
-          })
-          .catch((err) => {
-            callback(err);
-          })
       })
-  },
+    },
+      
   downgradeRole(req, callback) {
     return User.findById(req.user.id)
 
