@@ -11,5 +11,8 @@ router.get("/wikis/:id", wikiController.show);
 router.post("/wikis/:id/destroy", wikiController.destroy);
 router.get("/wikis/:id/edit", wikiController.edit);
 router.post("/wikis/:id/update",validation.validateWikis,wikiController.update);
+router.get("/wikis/private_wiki", wikiController.private); 
+router.post("/wikis/private_wiki", wikiController.private);
+
 
 module.exports = router;

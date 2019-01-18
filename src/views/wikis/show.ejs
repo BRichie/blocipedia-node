@@ -1,30 +1,33 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <% include ../static/partials/head.ejs %>
-    </head>
-    <body>
-
-        <% include ../static/partials/navbar.ejs %>
+  <head>
+    <% include ../static/partials/head.ejs %>
+  </head>
+  <body>
+    <% include ../static/partials/navbar.ejs %>
 
     <main class="container">
-
         <% include ../static/partials/messages.ejs %>
-
-        <h1><%= wiki.title %></h1>
-        
-        <% if(currentUser) { %>
-          <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
-          <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
-              <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
+      <h1><%= wiki.title %></h1>
+      <% if(currentUser) { %>
+        <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
+        <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
         <% } %>
-
-        <p><%= wiki.body %></p>
-
+      <p><%= wiki.body %></p>
+      <!-- Make private/public button -->
+      <% if( currentUser && currentUser.isPremium()) { %>
+        <div class="form-group">
+            <label for="private">Wiki Status</label>
+            <select class="form-control" name="private">
+                <option value="false">Public wiki</option>
+                <option value="true">Private wiki</option>
+            </select>
+        </div>
+    <% } %>
+    <!-- Make private/public button -->
     </main>
-
     <% include ../static/partials/baseScripts.ejs %>
-
-    </body>
+  </body>
 </html>

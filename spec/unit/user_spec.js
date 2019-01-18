@@ -22,8 +22,7 @@ describe("User", () => {
       User.create({
           username: "kobe",
           email: "goat@lakers.com",
-          password: "LALakers",
-          passwordConfirm: "LALakers"
+         
         })
         .then((user) => {
           expect(user.username).toBe("kobe");
@@ -39,7 +38,7 @@ describe("User", () => {
 
     it("should NOT create a user with invalid username, email or password", (done) => {
       User.create({
-          username: "notvalid",
+        
           email: "It's-a me, Mario!",
           password: "1234567890"
         })
@@ -54,13 +53,13 @@ describe("User", () => {
 
     it("should not create a user with an email already taken", (done) => {
       User.create({
-          username: "kobe",
+         
           email: "goat@lakers.com",
           password: "LALakers"
         })
         .then((user) => {
           User.create({
-              username: "kobe",
+             
               email: "goat@lakers.com",
               password: "fiverings"
             })

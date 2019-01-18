@@ -19,6 +19,7 @@ module.exports = {
       private: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
+        allowNull: false
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -28,6 +29,7 @@ module.exports = {
           model: "Users",
           key: "id",
           as: "userId"
+        }
         },
 
         createdAt: {
@@ -38,7 +40,7 @@ module.exports = {
           allowNull: false,
           type: Sequelize.DATE
         }
-      }
+      
     });
   },
   down: (queryInterface, Sequelize) => {

@@ -8,7 +8,6 @@
 
         <main class="container">
 
-        <% include ../static/partials/messages.ejs %>
 
         <h1>New Wiki</h1>
 
@@ -16,13 +15,22 @@
             <div class="form-group">
             <label for="title">Wiki title</label>
             <input type="text" class="form-control" name="title" aria-describedby="titleHelp" placeholder="Enter title">
-            <small class="text-muted" id="titleHelp">Title must be 2 or more characters in length.</small>
             </div>
             <div class="form-group">
             <label for="body">Wiki body</label>
             <textarea rows="4" class="form-control" name="body" placeholder="Enter body"></textarea>
-            <small class="text-muted" id="bodyHelp">Body must be 10 or more characters in length.</small>
             </div>
+            
+            <% if(currentUser.isPremium() || currentUser.isAdmin() ) { %>
+                <div class="form-group">
+                  <label for="private">Wiki Status</label>
+                  <select class="form-control" name="private">
+                    <option value="false">Public</option>
+                    <option value="true">Private</option>
+                  </select>
+                </div>
+                <% } %>    
+        </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 

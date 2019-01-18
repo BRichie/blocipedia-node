@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../static/partials/head.ejs %>
+</head>
+
+<body>
+    <% include ../static/partials/navbar.ejs %>
+    <main class="container">
+        <% include ../static/partials/messages.ejs %>
+        <!-- User account info -->
+        <h1>Account </h1>
+        <hr>
+        <h3>Hello<%= currentUser.username %>!</h3>
+        <hr>
+        <h3>INFO:</h3>
+        <h4><%= currentUser.email %></h4>
+        <hr>
+        <hr>
+        <h3>CURRENT PLAN:</h3>
+        <!-- END user account info -->
+
+        <!-- downgrade user from premium to standard -->
+        <h4>Basic</h4>
+        <header class="jumbotron my-3">
+            <h2>Change plan</h2>
+            <p>To create private wikis, upgrade your account to premium for $16.99.</p>
+            <form method="POST" action="/users/<%=currentUser.id %>/upgrade">
+                <script
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_TrITLf5WKmYYPrHxHso0o177"
+                data-amount="1699"
+                data-name="Test charge"
+                data-description="Premium upgrade"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto">
+                
+                    </script>
+            </form>
+
+    </main>
+    <% include ../static/partials/baseScripts.ejs %>
+</body>
+
+</html>

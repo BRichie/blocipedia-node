@@ -12,7 +12,8 @@ describe("Wiki", () => {
 
     sequelize.sync({
         force: true
-      }).then(() => {
+      }).then((res) => {
+        
         done();
       })
       .catch((err) => {
@@ -28,13 +29,13 @@ describe("Wiki", () => {
       Wiki.create({
           title: "Kanye",
           body: "Weird Dude, Great Rapper",
-          private: true,
+          private: false,
+         
 
         })
         .then((wiki) => {
           expect(wiki.title).toBe("Kanye");
           expect(wiki.body).toBe("Weird Dude, Great Rapper");
-          expect(wiki.private).toBe(true);
           done();
         })
         .catch((err) => {
@@ -42,68 +43,57 @@ describe("Wiki", () => {
           done();
         });
     });
-    it("should not create a wiki with a title already taken", (done) => {
-      Wiki.create({
-          title: "Kanye",
-          body: "Weird Dude, Great Rapper",
-          private: true,
-        })
-        .then((wiki) => {
-          Wiki.create({
-              title: "Kanye",
-              body: "Weird Dude, Great Rapper",
-              private: true
-            
-            })
-            .then((wiki) => {
-              done();
-            })
+  //   it("should not create a wiki with a title already taken", (done) => {
+  //     Wiki.create({
+  //       title: "Empty title"
+  //   })
+  //     .then((wiki) => {
+  //       done();
+  //     })
+  //     .catch((err) => {
+  //       expect(err.message).toContain("Wiki.body cannot be null");
+  //       expect(err.message).toContain("Wiki.userId cannot be null");
+  //       done();
+  //     });
+  //   });
+  // });
 
-            .catch((err) => {
-              expect(err.message).toContain("Validation Error");
-              done();
-            });
-          done();
-        })
-        .catch((err) => {
-          console.log(err);
-          done();
-        });
-    });
-  });
+  // describe("#setUser()", () => {
 
-  describe("#setUser()", () => {
+  //   it("should associate a wiki and a user together", (done) => {
+  //     User.create({
+  //         username: "Marshall Mathers",
+  //         email: "eminem@gmail.com",
+  //         password: "haleyjade"
+  //       })
+  //       .then((user) => {
+  //         this.user = user;
 
-    it("should associate a wiki and a user together", (done) => {
-      User.create({
-          username: "Marshall Mathers",
-          email: "eminem@gmail.com",
-          password: "haleyjade"
-        })
-        .then((user) => {
-          this.user = user;
+  //         Wiki.create({
+  //             title: "Kanye",
+  //             body: "Weird Dude, Great Rapper",
+  //             private: true,
+  //             userId: this.user.id
+  //           })
+  //           .then((wiki) => {
+  //             expect(wiki.userId).toBe(this.user.id);
+  //             done();
+  //           })
+  //           .catch((err) => {
+  //             console.log(err);
+  //             done();
+  //           })
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         done();
+  //       })
+  //   });
+  // });
+  
 
-          Wiki.create({
-              title: "Kanye",
-              body: "Weird Dude, Great Rapper",
-              private: true,
-              userId: this.user.id
-            })
-            .then((wiki) => {
-              expect(wiki.userId).toBe(this.user.id);
-              done();
-            })
-            .catch((err) => {
-              console.log(err);
-              done();
-            })
-        })
-        .catch((err) => {
-          console.log(err);
-          done();
-        })
-    });
-  });
+
+}); 
 
 
 });

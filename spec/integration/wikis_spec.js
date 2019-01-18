@@ -34,7 +34,7 @@ describe("routes : wikis", () => {
           Wiki.create({
               title: "Hardwood Greats",
               body: "Basketball Legends",
-              userId: user.id
+              userId: this.user.id
             })
             .then((wiki) => {
               this.wiki = wiki;
@@ -82,6 +82,8 @@ describe("routes : wikis", () => {
 
         }
       };
+      it("should create a new wiki and redirect", (done) => {
+
       request.post(options, (err, res, body) => {
         Wiki.findOne({
             where: {
@@ -180,4 +182,5 @@ describe("routes : wikis", () => {
   });
 
 });
-});
+  });
+})
