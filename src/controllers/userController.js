@@ -56,26 +56,17 @@ module.exports = {
   },
 
   signIn(req, res, next) {
-    passport.authenticate("local", function(err, user, info){
-            if(err){
-        next(err);
-      }
-      
-      if (!user) {
-        req.flash("notice", "Error: The email or password you entered is incorrect.")
-        res.redirect("/users/sign_in");
-      }          
-      
-      req.logIn(user,function(err){
-        if(err){
-          next(err);
-        }
+    passport.authenticate("local")(req, res, function () {
+
+      if(!req.user){
+        req.flash("notice", "Sign in failed. Please try again.")
+        res.redirect("/users/signin");
+    } else {
         req.flash("notice", "You've successfully signed in!");
         res.redirect("/");
-      });
+    }
     })
-    (req, res, next);
-  },
+},
   signOut(req, res, next) {
     req.logout();
     req.flash("notice", "You've successfully signed out!");
@@ -89,10 +80,7 @@ module.exports = {
         req.flash("notice", "Error: No user found with that ID.");
         res.redirect("/");
       } else {
-        res.render("users/show", {
-          user
-
-        });
+        res.render("users/show", { user });
       }
     });
   },
@@ -100,37 +88,38 @@ module.exports = {
     const token = req.body.stripeToken;
 
     const charge = stripe.charges.create({
-      amount: 1699,
-      currency: 'usd',
-      description: 'Premium',
-      source: token,
-    })
-        userQueries.upgradeRole(req, (err, result) => {
-          if(err != null || result.user.id === undefined){
-          req.flash("notice", "Upgrade unsuccessfull");
-          res.redirect("users/paymentDeclined");
-      } else {
-          req.flash("notice", "Upgrade successful.");
-          res.render("users/payment", {result});
-      }
-     })
-   },
-  
+        amount: 1699,
+        currency: 'usd',
+        description: 'Premium',
+        source: token,
+      })
+    
+        userQueries.upgradeRole(req,  (err, result) => {
+          if(err || result.id === undefined){
+              req.flash("notice", "No user found with that ID.");
+              res.redirect("users/paymentDecline");
+          } else {
+              req.flash("notice", "Thank you for upgrading to the premium plan!");
+              res.render("users/payment", {result});
+          }
+      })
 
-  downgrade(req, res, next) {
-  userQueries.downgradeRole(req.params.id, (err, result) => {
-    if (err != null || result.user.id === undefined) {
-      req.flash("notice", "Downgrade unsuccessful.");
-      res.redirect("users/show");
-    } else {
-      
-   
-      req.flash("notice", "You've been downgraded to Standard!");
-      res.render("/users/standard_role", {result});
-    }
-    })
   },
 
+
+
+  downgrade(req, res, next) {
+    userQueries.downgradeRole(req, (err, result) => {
+      if(err || result.id === undefined){
+          req.flash("notice", "No user found with that ID.");
+          res.redirect("users/show");
+      } else {
+          req.flash("notice", "Success, you've switched to basic plan.");
+          res.render("users/downgradeShow", {result});
+      }
+
+    })
+  },
   standard_role(req, res, next) {
     res.render("users/standard_role");
   },

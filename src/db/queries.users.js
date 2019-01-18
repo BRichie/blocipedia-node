@@ -24,69 +24,72 @@ module.exports = {
       });
   },
 
-  getAllUsers(callback) {
-    let result = {};
-    return User.all()
-      .then(users => {
-        result['users'] = users;
-        callback(null, result);
-      })
+  // getAllUsers(callback) {
+  //   let result = {};
+  //   return User.all()
+  //     .then(users => {
+  //       result['users'] = users;
+  //       callback(null, result);
+  //     })
+  //     .catch((err) => {
+  //       callback(err);
+  //     })
+  // },
+  // getUser(id, callback) {
+  //   let result = {};
+  //   User.findById(id)
+  //     .then((user) => {
+  //       if (!user) {
+  //         callback(404);
+  //       } else {
+  //         result['user'] = user;
+  //         callback(null, result);
+        
+  //       };
+  //     })
+  // },
+
+getUser(id, callback){
+  return User.findById(id)
+  .then((user) => {
+   callback(null, user);
+   })
       .catch((err) => {
-        callback(err);
-      })
-  },
-  getUser(id, callback) {
-    let result = {};
-    User.findById(id)
-      .then((user) => {
-        if (!user) {
-          callback(404);
-        } else {
-          result['user'] = user;
-          callback(null, result);
-          return user;
-        };
-      })
-  },
-
-
-
-
+       callback(err);
+    })
+},
   upgradeRole(req, callback) {
-    return User.findbyId(req.result.id)
-    
-
-     .then((user) => {
-       if(user.role == "standard"){
-         user.update({
-           role: "premium"
-         })
-        }
-      })
-    },
-      
-  downgradeRole(req, callback) {
     return User.findById(req.user.id)
-
       .then((user) => {
         if (!user) {
-          return callback("User not found");
+          return callback("404");
         }
-
-        user.update({
-            role: "standard"
-          }, {
-            where: {
-              id: user.id
-            }
-          })
-
+        user.update({role: 'premium' }, {where: {id: user.id}})
           .then((user) => {
             callback(null, user);
-          })
-          .catch((err) => {
-            callback(err);
-          })
-      })
-  }
+      
+  })
+  .catch((err) => {
+      callback(err);
+  })
+})
+},
+
+downgradeRole(req, callback){
+  return User.findById(req.user.id)
+  .then((user) => {
+    if(!user){
+      return callback("User not found");
+    }
+
+    user.update({role: "standard"}, {where: {id: user.id}})
+
+    .then((user) => {
+      callback(null, user);
+    })
+    .catch((err) => {
+      callback(err);
+    })
+  })
+}
 }
