@@ -13,7 +13,7 @@
       <ul class="list-group">
 
         <% wikis.forEach((wiki) => { %>
-          <% if(wiki.private) { %>
+          <% if(wiki.private ) { %>
             <% if(currentUser) { %>
               <% if(currentUser.isPremium() || currentUser.isAdmin()){ %>
                 <li class="list-group-item">
