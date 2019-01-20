@@ -8,6 +8,9 @@
 
     <main class="container">
 
+        <% include ../static/partials/messages.ejs %>
+
+
       <h1>Edit Wiki</h1>
 
       <form action="/wikis/<%= wiki.id %>/update" method="post">
@@ -20,14 +23,18 @@
           <textarea rows="4" class="form-control" name="body" placeholder="Enter Body"><%= wiki.body %></textarea>
         </div>
 
+
+
                  <!-- Make private/public button -->
-                 <% if( currentUser.isPremium() || currentUser.isAdmin() ) { %>
+                 <% if(currentUser &&  currentUser.isPremium() || currentUser.isAdmin() && wiki.userId === currentUser.id ) { %>
                     <div class="form-group">
                         <label for="private">Wiki status</label>
                         <select class="form-control" name="private">
-                            <option value="false">Public wiki</option>
-                            <option value="true">Private wiki</option>
+                            <option value="false">Public</option>
+                            <option value="true">Private</option>
                         </select>
+
+  
                     </div>
                  <% } %>
                 <!-- Make private/public button -->

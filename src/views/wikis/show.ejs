@@ -9,15 +9,17 @@
     <main class="container">
         <% include ../static/partials/messages.ejs %>
       <h1><%= wiki.title %></h1>
+
+      <div class='button-container'>
       <% if(currentUser) { %>
         <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
         <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
         <% } %>
-      <p><%= wiki.body %></p>
+      <p><%- wiki.body %></p>
       <!-- Make private/public button -->
-      <% if( currentUser && currentUser.isPremium()) { %>
+     <!--  <% if( currentUser.isPremium() || currentUser.isAdmin() )   { %>
         <div class="form-group">
             <label for="private">Wiki Status</label>
             <select class="form-control" name="private">
@@ -25,9 +27,9 @@
                 <option value="true">Private wiki</option>
             </select>
         </div>
-    <% } %>
+    <% } %> -->
     <!-- Make private/public button -->
     </main>
-    <% include ../static/partials/baseScripts.ejs %>
+    <% include ../static/partials/baseScripts.ejs %>ß
   </body>
 </html>

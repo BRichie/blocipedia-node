@@ -1,4 +1,6 @@
 const User = require("./models").User;
+const Wiki = require("./models").Wiki;
+
 const bcrypt = require("bcryptjs");
 
 
@@ -24,17 +26,17 @@ module.exports = {
       });
   },
 
-  getAllUsers(callback) {
-    let result = {};
-    return User.all()
-      .then(users => {
-        result['users'] = users;
-        callback(null, result);
-      })
-      .catch((err) => {
-        callback(err);
-      })
-  },
+  // getAllUsers(callback) {
+  //   let result = {};
+  //   return User.all()
+  //     .then(users => {
+  //       result['users'] = users;
+  //       callback(null, result);
+  //     })
+  //     .catch((err) => {
+  //       callback(err);
+  //     })
+  
   getUser(id, callback) {
     let result = {};
     User.findById(id)
@@ -49,15 +51,6 @@ module.exports = {
       })
   },
 
-// getUser(id, callback){
-//   return User.findById(id)
-//   .then((user) => {
-//    callback(null, user);
-//    })
-//       .catch((err) => {
-//        callback(err);
-//     })
-// },
   upgradeRole(req, callback) {
     return User.findById(req.user.id)
       .then((user) => {

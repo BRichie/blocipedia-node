@@ -37,7 +37,7 @@ module.exports = {
       } else {
 
         passport.authenticate("local")(req, res, () => {
-          req.flash("notice", `Success!! ${user.username}, You've successfully signed up!`);
+          req.flash("notice", `Success!!  ${user.username}  , You've successfully signed up!`);
           sgMail.setApiKey(process.env.SENDGRID_API_KEY);
           sgMail.send(msg);
 
@@ -75,12 +75,12 @@ module.exports = {
 
 
   show(req, res, next) {
-    userQueries.getUser(req.params.id, (err, user) => {
-      if (err || user === undefined) {
+    userQueries.getUser(req.params.id, (err, result) => {
+      if (err || result === undefined) {
         req.flash("notice", "Error: No user found with that ID.");
         res.redirect("/");
       } else {
-        res.render("users/show", { user });
+        res.render("users/show", { result });
       }
     });
   },
@@ -94,25 +94,26 @@ module.exports = {
         source: token,
       })
     
-        userQueries.upgradeRole(req,  (err, result) => {
-          if(err || result.id === undefined){
-              req.flash("notice", "No user found with that ID.");
+        userQueries.upgradeRole(req,  (err, user) => {
+          if(err || user.id === undefined){
+              req.flash("notice", "Upgrade Unsuccessful.");
               res.redirect("users/paymentDecline");
           } else {
               req.flash("notice", "Thank you for upgrading to the premium plan!");
-              res.render("users/payment", {result});
+              res.render("users/payment", { user });
           }
       })
 
   },
   downgrade(req, res, next) {
-    userQueries.downgradeRole(req, (err, result) => {
-      if(err || result.id === undefined){
-          req.flash("notice", "No user found with that ID.");
+    userQueries.downgradeRole(req, (err, user) => {
+      if(err || user.id === undefined){
+          req.flash("notice", "Downgrade Declined.");
           res.redirect("users/show");
       } else {
-          req.flash("notice", "Success, you've switched to basic plan.");
-          res.render("users/standard_role", {result});
+        wikiQueries.wikiNowPublic(req.user.dataValues.id);
+          req.flash("notice", "Back to the basics.");
+          res.render("users/standard_role", { user });
       }
 
     })
