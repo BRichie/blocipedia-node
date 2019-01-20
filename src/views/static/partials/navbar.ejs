@@ -13,10 +13,24 @@
            <li class="nav-item">
             <a class="nav-link" href="/wikis">Wikis</a>
           </li>
+          
+
+
+          <% if(!currentUser) { %>
+
+      
+            <li class="nav-item">
+              <a class="nav-link" href="/users/sign_up">Sign up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/users/sign_in">Sign in</a>
+              </li>
+        <% } %>
+          
 
 
 
-        </li>
+        
         <!-- Standard user -->
         <% if(currentUser && currentUser.isStandard()) { %>
         <li class="nav-item">
@@ -34,13 +48,20 @@
           <a class="nav-link" href="/wikis/private">Private Wikis</a>
 
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/users/<%= currentUser.id %>">Profile</a>
+          </li>
         <% }%>
         <% if(currentUser) { %>
 
       
-        <li class="nav-item">
+   <!--      <li class="nav-item">
           <a class="nav-link" href="/users/sign_in">Sign in</a>
-        </li>
+        </li> -->
+        <li class="nav-item">
+            <a class="nav-link" href="/users/sign_out">Sign out</a>
+          </li>
         <% }%>
 
 
