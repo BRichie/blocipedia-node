@@ -1,28 +1,53 @@
 const Wiki = require("./models").Wiki;
 const Authorizer = require("../policies/application");
 const User = require("./models").User;
+const Collaborator = require("./models").Collaborator;
 
 
 
 module.exports = {
-    
-    getAllWikis(callback) {
-        let result = {};
-        return Wiki.all()
+
+        getAllWikis(callback) {
+            return Wiki.all()
             .then((wikis) => {
-                result["wikis"] = wikis;
-                callback(null, result);
+              callback(null, wikis);
             })
             .catch((err) => {
-                callback(err);
+              callback(err);
             })
-    },
-
-
+          },
+        
 
 
     getWiki(id, callback) {
-        return Wiki.findById(id)
+        let result = {};
+        Wiki.findById(id)
+            .then((wiki) => {
+                if (!wiki) {
+                    callback(404);
+                } else {
+                    result["wiki"] = wiki;
+                    Collaborator.scope({
+                            method: ["collaboratorsFor", id]
+                        }).all()
+                        .then((collaborators) => {
+                            result["collaborators"] = collaborators;
+                            callback(null, result);
+                        })
+                        .catch((err) => {
+                            callback(err);
+                        })
+                }
+            })
+    },
+
+    addWiki(newWiki, callback) {
+        return Wiki.create({
+                title: newWiki.title,
+                body: newWiki.body,
+                private: newWiki.private,
+                userId: newWiki.userId
+            })
             .then((wiki) => {
                 callback(null, wiki);
             })
@@ -31,28 +56,15 @@ module.exports = {
             })
     },
 
-    addWiki(newWiki, callback) {
-        return Wiki.create({
-            title: newWiki.title,
-            body: newWiki.body,
-            private: newWiki.private,
-            userId: newWiki.userId
-          })
-          .then((wiki) => {
-            callback(null, wiki);
-          })
-          .catch((err) => {
-            callback(err);
-          })
-        },
-
     deleteWiki(id, callback) {
         return Wiki.destroy({
-            where: { id }
-           
-                })
-                .then((wiki) => {
-                    callback(null, wiki);
+                where: {
+                    id
+                }
+
+            })
+            .then((wiki) => {
+                callback(null, wiki);
             })
             .catch((err) => {
                 callback(err);
@@ -86,7 +98,7 @@ module.exports = {
     },
 
     wikiNowPrivate(id) {
-        return Wiki.All()
+        return Wiki.all()
             .then((wikis) => {
                 wikis.forEach((wiki) => {
                     if (wiki.userId == id && wiki.private == false) {
@@ -99,8 +111,8 @@ module.exports = {
             .catch((err) => {
                 console.log(err);
             })
-        },
-       
+    },
+
 
 
 
@@ -118,6 +130,6 @@ module.exports = {
             .catch((err) => {
                 console.log(err);
             })
-        }
+    }
 
 }

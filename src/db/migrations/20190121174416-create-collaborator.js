@@ -1,25 +1,28 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Wikis', {
+    return queryInterface.createTable('Collaborators', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+
+      username: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      body: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      private: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-        allowNull: false
+
+      wikiId: {
+        type: Sequelize.INTEGER,
+        onDelete: "CASCADE",
+        allowNull: false,
+        references: {
+          model: "Wikis",
+          key: "id",
+          as: "wikiId"
+        }
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -39,11 +42,12 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+
 
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Wikis');
+    return queryInterface.dropTable('Collaborators');
   }
 };

@@ -1,55 +1,58 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <% include ../static/partials/head.ejs %>
-    </head>
-    <body>
-        <% include ../static/partials/navbar.ejs %>
-       <main class="container">
-          <% include ../static/partials/messages.ejs %>
-          <!-- User account info -->
 
-          <h1>Account </h1>
-          <h3>Hello <%= currentUser.username %>!</h3>
-          
-          <h3>INFO:</h3>
-          <h4><%= currentUser.email %></h4>
-          
-          <h3>CURRENT PLAN:</h3>
+<head>
+    <% include ../static/partials/head.ejs %>
+</head>
 
-    
+<body>
+    <% include ../static/partials/navbar.ejs %>
+    <main class="container">
+        <% include ../static/partials/messages.ejs %>
+        <!-- User account info -->
 
-          <!-- upgrade user from standard to premium -->
-          <% if(currentUser && currentUser.isStandard()) { %>
-            <h4>Free Plan</h4>
-            <header class="jumbotron my-3">
-                <h2>Change plan</h2>
-                <p>Go Premium to access the private wiki option.</p>
-                <form method="POST" action="/users/<%=currentUser.id %>/upgrade">
-                   <!-- <form method="POST" action="/users/<%=currentUser.id %>/upgrade">-->
-                        <script
-                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                        data-key="pk_test_TrITLf5WKmYYPrHxHso0o177"
-                        data-amount="1699"
-                        data-name="Test charge"
-                        data-description="Premium upgrade"
-                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                        data-locale="auto">
+        <h1>Account </h1>
+        <h3>Hello
+            <%= currentUser.username %>!</h3>
+
+        <h3>INFO:</h3>
+        <h4>
+            <%= currentUser.email %>
+        </h4>
+
+        <h3>CURRENT PLAN:</h3>
+
+
+
+        <!-- upgrade user from standard to premium -->
+        <% if(currentUser && currentUser.isStandard()) { %>
+        <h4>Free Plan</h4>
+        <header class="jumbotron my-3">
+            <h2>Change plan</h2>
+            <p>Go Premium to enable private wikis and the collaborator's option.</p>
+            <form method="POST" action="/users/<%=currentUser.id %>/upgrade">
+                <!-- <form method="POST" action="/users/<%=currentUser.id %>/upgrade">-->
+                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_TrITLf5WKmYYPrHxHso0o177"
+                    data-amount="1699" data-name="Test charge" data-description="Premium upgrade" data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                    data-locale="auto">
                 </script>
-                </form>
-            </header>
-            <!-- downgrade user from premium to standard -->
-            <% } else if(currentUser && currentUser.isPremium()) { %>
-                <h4>Premium</h4>
-                <header class="jumbotron my-3">
-                    <h2>Change plan</h2>
-                    <p>Go Free! No Fees!</p>
-                    <form  style="display:initial" method="POST" action="/users/<%=currentUser.id %>/downgrade">
-                        <button type="submit" class="btn btn-danger">Go Free</button>
-                    </form>
-                </header>
-            <% } %>
-        </main>
-        <% include ../static/partials/baseScripts.ejs %>
-      </body>
+            </form>
+        </header>
+        <!-- downgrade user from premium to standard -->
+        <% } else if(currentUser && currentUser.isPremium()) { %>
+        <h4>Premium</h4>
+        <header class="jumbotron my-3">
+            <h2>Change plan</h2>
+            <p>Go Free! No Fees!</p>
+            <form style="display:initial" method="POST" action="/users/<%=currentUser.id %>/downgrade">
+                <button type="submit" class="btn btn-danger">Go Free</button>
+            </form>
+        </header>
+        <% } %>
+
+       
+    </main>
+    <% include ../static/partials/baseScripts.ejs %>
+</body>
+
 </html>

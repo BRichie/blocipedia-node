@@ -11,12 +11,9 @@
 
         <% include ../static/partials/messages.ejs %>
 
-
-
-     
         <br>
         <h1 class="page-header">Private Wikis</h1>
-        <% if(currentUser && currentUser.role !== "standard") { %>
+        <% if(currentUser.isAdmin() && currentUser.isPremium()) { %>
         <a href="/wikis/new" class="btn btn-success">Create Private Wiki</a>
         <% } %>
         <hr>

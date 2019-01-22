@@ -2,25 +2,25 @@
 const faker = require("faker");
 
 
- let users = [];
+let users = [];
 
- for(let i = 1 ; i <= 60 ; i++){
-   users.push({
-     username: faker.internet.userName(),
-     email: faker.internet.email(),
-     password: faker.internet.password(),     
-     role: "standard",
-     createdAt: new Date(),
-     updatedAt: new Date(),
-     
-   });
- }
+for (let i = 1; i <= 60; i++) {
+  users.push({
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    role: "standard",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+
+  });
+}
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
 
     return queryInterface.bulkInsert("Users", users, {});
-  
+
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
@@ -35,7 +35,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.bulkDelete("Users", null, {});
-  
+
 
     /*
       Add reverting commands here.

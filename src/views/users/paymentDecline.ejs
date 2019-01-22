@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <% include ../static/partials/head.ejs %>
-    </head>
-    <body>
-        <% include ../static/partials/navbar.ejs %>
-       <main class="container">
-          <% include ../static/partials/messages.ejs %>
-          <!-- User account info -->
-          <header class="jumbotron my-3">
-            <h3>Uhoh, something went wrong</h3>
-            <p>Your transaction could not be completed!</p>
-            <p>Try again</p>
-            
-            <p><a href="/show">Try again</a></p>
-          </header>
-        </main>
-        <% include ../static/partials/baseScripts.ejs %>
-      </body>
+
+<head>
+  <% include ../static/partials/head.ejs %>
+</head>
+
+<body>
+  <% include ../static/partials/navbar.ejs %>
+  <main class="container">
+    <% include ../static/partials/messages.ejs %>
+    <!-- User account info -->
+    <header class="jumbotron my-3">
+      <h3>Uhoh, something went wrong</h3>
+      <p>Your transaction could not be completed!</p>
+      <p>Try again</p>
+
+      <p><a href="/show">Try again</a></p>
+    </header>
+  </main>
+  <% include ../static/partials/baseScripts.ejs %>
+</body>
+
 </html>

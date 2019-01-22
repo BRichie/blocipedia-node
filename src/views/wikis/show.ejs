@@ -1,25 +1,71 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <% include ../static/partials/head.ejs %>
-  </head>
-  <body>
-    <% include ../static/partials/navbar.ejs %>
 
-    <main class="container">
-        <% include ../static/partials/messages.ejs %>
-      <h1><%= wiki.title %></h1>
+<head>
+  <% include ../static/partials/head.ejs %>
+</head>
 
-      <div class='button-container'>
-      <% if(currentUser) { %>
+<body>
+  <% include ../static/partials/navbar.ejs %>
+
+  <main class="container">
+    <% include ../static/partials/messages.ejs %>
+    <h1>
+      <%= wiki.title %>
+    </h1>
+
+   
+        <% if(currentUser) { %>
         <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
         <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
-            <button type="submit" class="btn btn-danger">Delete</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
         </form>
         <% } %>
-      <p><%- wiki.body %></p>
-   
-    </main>
-    <% include ../static/partials/baseScripts.ejs %>
-  </body>
+
+        <% if(wiki.private) { %>
+          <a href="/wikis/<%= wiki.id %>/collaborators" class="btn btn-info">Edit Collaborators</a>
+          <% } %>
+        <p>
+          <%- wiki.body %>
+        </p>
+
+      <!-- </span>
+      <span class='right-button' style="float:left" style='padding-left: 25px'>
+        <% if(currentUser.id === wiki.userId || currentUser.isAdmin) { %>
+        <form style="width: 350px" action="/wikis/<%= wiki.id %>/collaborators/create" method="post">
+          <div class="input-group">
+            <button type="submit" class="btn btn-primary" style='margin-right: 3.25px'>+ Add collaborators</button>
+            <input type="text" class="form-control" name="collaborator" placeholder="Enter username">
+          </div>
+        </form>
+        <br>
+        <% } %>
+      </span> -->
+      <br>
+      <div class='collabos' style='bottom: 0' style='bottom: 0px'>
+        <p>Collaborators for this wiki:</p>
+        <% if(wiki.collaborators) { %>
+        <ul class="list-group">
+          <% wiki.collaborators.forEach((collaborator) => {  %>
+          <br>
+          <li class="list-group-item">
+              <%= collaborator.User.username %>
+              <% if(currentUser && currentUser.role === "premium" || currentUser.role === "admin") { %>
+                <form style="float:right" style="float:top" style="width:25%" action="/wikis/<%= collaborator.wikiId %>/collaborators/<%= collaborator.id %>/delete"
+                  method="post">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                  <input type="hidden" value="<%= collaborator.User.id %>" class="form-control" name="collaborator">
+                </form>
+              <% } %>
+            </li>
+            <% }) %>
+          </ul>
+          <% } %>
+        </div>
+
+
+  </main>
+  <% include ../static/partials/baseScripts.ejs %>
+</body>
+
 </html>

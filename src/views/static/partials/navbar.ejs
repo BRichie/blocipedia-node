@@ -26,6 +26,18 @@
                 <a class="nav-link" href="/users/sign_in">Sign in</a>
               </li>
         <% } %>
+
+        <% if(currentUser) { %>
+
+
+          <li class="nav-item">
+              <a class="nav-link" href="/users/<%= currentUser.id %>/collaborations">Collabo's</a>
+            </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/users/sign_out">Sign out</a>
+            </li>
+          <% }%>
+  
           
 
 
@@ -36,9 +48,13 @@
         <li class="nav-item">
           <a class="nav-link" href="/users/<%= currentUser.id %>">Profile</a>
         </li>
-        <li class="nav-item">
+
+        <!-- <li class="nav-item">
+            <a class="nav-link" href="/users/<%= currentUser.id %>/collaborations">Collabo's</a>
+          </li> -->
+        <!-- <li class="nav-item">
           <a class="nav-link" href="/users/sign_out">Sign out</a>
-        </li>
+        </li> -->
        
         <!-- Premium user -->
         <% } else if(currentUser && currentUser.isPremium()) { %>
@@ -49,25 +65,16 @@
 
         </li>
 
+        <!-- <li class="nav-item">
+            <a class="nav-link" href="/users/<%= currentUser.id %>/collaborations">Collabo's</a>
+          </li> -->
+
         <li class="nav-item">
             <a class="nav-link" href="/users/<%= currentUser.id %>">Profile</a>
           </li>
         <% }%>
-        <% if(currentUser) { %>
-
-      
-   <!--      <li class="nav-item">
-          <a class="nav-link" href="/users/sign_in">Sign in</a>
-        </li> -->
-        <li class="nav-item">
-            <a class="nav-link" href="/users/sign_out">Sign out</a>
-          </li>
-        <% }%>
-
-
-
-
-      </ul>
+       
+         </ul>
     </div>
   </div>
 </nav>

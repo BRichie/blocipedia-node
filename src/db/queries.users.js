@@ -1,5 +1,6 @@
 const User = require("./models").User;
 const Wiki = require("./models").Wiki;
+const Collaborator = require("./models").Collaborator;
 
 const bcrypt = require("bcryptjs");
 
@@ -36,7 +37,8 @@ module.exports = {
   //     .catch((err) => {
   //       callback(err);
   //     })
-  
+  //   },
+
   getUser(id, callback) {
     let result = {};
     User.findById(id)
@@ -45,11 +47,17 @@ module.exports = {
           callback(404);
         } else {
           result['user'] = user;
+          Collaborator.scope({ method: ["collaborationsFor", id]}).all()
+          .then((collaborations) => {
+            result["collaborations"] = collaborations;
           callback(null, result);
-        
-        };
+          })
+          .catch((err) => {
+            callback(err);
+          })
+        }
       })
-  },
+    },
 
   upgradeRole(req, callback) {
     return User.findById(req.user.id)
@@ -57,32 +65,44 @@ module.exports = {
         if (!user) {
           return callback("404");
         }
-        user.update({role: 'premium' }, {where: {id: user.id}})
+        user.update({
+            role: 'premium'
+          }, {
+            where: {
+              id: user.id
+            }
+          })
           .then((user) => {
             callback(null, user);
-      
-  })
-  .catch((err) => {
-      callback(err);
-  })
-})
-},
 
-downgradeRole(req, callback){
-  return User.findById(req.user.id)
-  .then((user) => {
-    if(!user){
-      return callback("User not found");
-    }
+          })
+          .catch((err) => {
+            callback(err);
+          })
+      })
+  },
 
-    user.update({role: "standard"}, {where: {id: user.id}})
+  downgradeRole(req, callback) {
+    return User.findById(req.user.id)
+      .then((user) => {
+        if (!user) {
+          return callback("User not found");
+        }
 
-    .then((user) => {
-      callback(null, user);
-    })
-    .catch((err) => {
-      callback(err);
-    })
-  })
-}
+        user.update({
+            role: "standard"
+          }, {
+            where: {
+              id: user.id
+            }
+          })
+
+          .then((user) => {
+            callback(null, user);
+          })
+          .catch((err) => {
+            callback(err);
+          })
+      })
+  }
 }

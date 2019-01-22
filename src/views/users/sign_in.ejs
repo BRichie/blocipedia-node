@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <% include ../static/partials/head.ejs %>
-  </head>
-  <body>
 
-    <% include ../static/partials/navbar.ejs %>
+<head>
+  <% include ../static/partials/head.ejs %>
+</head>
 
-    <main class="container">
+<body>
 
-      <% include ../static/partials/messages.ejs %>
+  <% include ../static/partials/navbar.ejs %>
 
-      <h1>Sign in</h1>
+  <main class="container">
 
-      <form action="/users/sign_in" method="post">
+    <% include ../static/partials/messages.ejs %>
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email">
-          <small class="text-muted" id="emailHelp">email address must be a valid address</small>
-        </div>
+    <h1>Sign in</h1>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" name="password" aria-describedby="passwordHelp" placeholder="Enter password">
-          <small class="text-muted" id="passwordHelp">password must match confirmation below</small>
-        </div>
+    <form action="/users/sign_in" method="post">
 
-        <button type="submit" class="btn btn-primary">Sign in</button>
-      </form>
-    </main>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+        <small class="text-muted" id="emailHelp">email address must be a valid address</small>
+      </div>
 
-    <% include ../static/partials/baseScripts.ejs %>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password" aria-describedby="passwordHelp" placeholder="Enter password">
+        <small class="text-muted" id="passwordHelp">password must match confirmation below</small>
+      </div>
 
-  </body>
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </form>
+  </main>
+
+  <% include ../static/partials/baseScripts.ejs %>
+
+</body>
+
 </html>
