@@ -1,24 +1,22 @@
 const Wiki = require("./models").Wiki;
-const Authorizer = require("../policies/application");
 const User = require("./models").User;
 const Collaborator = require("./models").Collaborator;
+const Authorizer = require("../policies/application");
+
 
 
 
 module.exports = {
 
-        getAllWikis(callback) {
-            return Wiki.all()
+    getAllWikis(callback) {
+        return Wiki.all()
             .then((wikis) => {
-              callback(null, wikis);
+                callback(null, wikis);
             })
             .catch((err) => {
-              callback(err);
+                callback(err);
             })
-          },
-        
-
-
+    },
     getWiki(id, callback) {
         let result = {};
         Wiki.findById(id)
@@ -34,12 +32,18 @@ module.exports = {
                             result["collaborators"] = collaborators;
                             callback(null, result);
                         })
-                        .catch((err) => {
-                            callback(err);
-                        })
+
                 }
             })
+            .catch((err) => {
+                callback(err);
+
+
+            })
     },
+
+
+
 
     addWiki(newWiki, callback) {
         return Wiki.create({
@@ -48,54 +52,61 @@ module.exports = {
                 private: newWiki.private,
                 userId: newWiki.userId
             })
-            .then((wiki) => {
-                callback(null, wiki);
+            .then((wikis) => {
+                callback(null, wikis);
             })
             .catch((err) => {
                 callback(err);
             })
     },
 
-    deleteWiki(id, callback) {
-        return Wiki.destroy({
-                where: {
-                    id
+    deleteWiki(req, callback) {
+
+        return Wiki.findById(req.params.id)
+            .then((wiki) => {
+                const authorized = new Authorizer(req.user, wiki).destroy();
+
+                if (authorized) {
+                    wiki.destroy()
+                        .then((res) => {
+                            callback(null, wiki);
+                        });
+                } else {
+                    req.flash("notice", "You are not authrorized to do that.")
+                    callback(401);
                 }
-
-            })
-            .then((wiki) => {
-                callback(null, wiki);
             })
             .catch((err) => {
                 callback(err);
-            })
+            });
     },
+
     updateWiki(req, updatedWiki, callback) {
         return Wiki.findById(req.params.id)
             .then((wiki) => {
 
                 if (!wiki) {
-                    return callback("404");
+                    return callback("No Wikis Located");
                 }
                 const authorized = new Authorizer(req.user, wiki).update();
 
                 if (authorized) {
 
-                    wiki.update(updatedWiki, {
-                            fields: Object.keys(updatedWiki)
-                        })
-                        .then(() => {
-                            callback(null, wiki);
-                        })
-                        .catch((err) => {
-                            callback(err);
-                        });
-                } else {
-                    req.flash("notice", "You are not authorized to do that.");
-                    callback("DENIED");
-                }
-            });
-    },
+
+                wiki.update(updatedWiki, {
+                        fields: Object.keys(updatedWiki)
+                    })
+                    .then(() => {
+                        callback(null, wiki);
+                    })
+                    .catch((err) => {
+                        callback(err);
+                      });
+
+
+            }
+    })
+},
 
     wikiNowPrivate(id) {
         return Wiki.all()
@@ -108,8 +119,10 @@ module.exports = {
                     }
                 })
             })
+
+
             .catch((err) => {
-                console.log(err);
+                callback(err);
             })
     },
 

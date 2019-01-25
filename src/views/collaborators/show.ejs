@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -9,12 +10,12 @@
     <% include ../static/partials/navbar.ejs %>
     <main class="container">
         <% include ../static/partials/messages.ejs %>
-
-
+      
+       
         <h1>Collaborators for
-            <%= wiki.title %> Wiki</h1>
-        <hr>
-        <h4> Add a New Collaborator</h4>
+                <%= wiki.title %> Wiki</h1>
+            <hr>
+            <h4> Add a New Collaborator</h4>
         <% if(currentUser && (currentUser.role === "premium" || currentUser.role === "admin")) { %>
         <form style="width:25%" action="/wikis/<%= wiki.id %>/collaborators/create" method="post">
             <div class="input-group">
@@ -23,7 +24,7 @@
             </div>
         </form>
         <% } %>
-
+       
         <% if(collaborators) { %>
         <ul class="list-group">
             <% collaborators.forEach((collaborator) => {  %>
@@ -32,7 +33,7 @@
                     <%= collaborator.User.username %>
                 </h4>
                 <% if(currentUser && (currentUser.role === "premium" || currentUser.role === "admin")) { %>
-                <form action="/wikis/<%= wiki.id %>/collaborators/delete" method="post">
+                <form action="/wikis/<%= collaborator.wikiId %>/collaborators/delete" method="post">
                     <button type="submit" class="btn btn-danger">Delete</button>
                     <input type="hidden" value="<%= collaborator.User.id %>" class="form-control" name="collaborator">
                 </form>
@@ -43,6 +44,7 @@
         <% } %>
     </main>
     <% include ../static/partials/baseScripts.ejs %>
+
 </body>
 
 </html>

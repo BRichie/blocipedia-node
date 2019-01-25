@@ -6,14 +6,16 @@
 </head>
 
 <body>
-    <% include ../static/partials/navbar.ejs %>
     <main class="container">
+        <% include ../static/partials/navbar.ejs %>
 
         <% include ../static/partials/messages.ejs %>
 
-        <br>
-        <h1 class="page-header">Private Wikis</h1>
-        <% if(currentUser.isAdmin() && currentUser.isPremium()) { %>
+
+     <h1 class="page-header">Private Wikis</h1>
+
+
+     <%  if(currentUser && currentUser.role !== "standard") { %>
         <a href="/wikis/new" class="btn btn-success">Create Private Wiki</a>
         <% } %>
         <hr>

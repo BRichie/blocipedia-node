@@ -2,17 +2,16 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Collaborators', {
+      
+      
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
-      },
 
-      username: {
-        type: Sequelize.STRING,
-        allowNull: false
       },
+    
 
       wikiId: {
         type: Sequelize.INTEGER,

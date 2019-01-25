@@ -1,8 +1,9 @@
 const User = require("./models").User;
-const Wiki = require("./models").Wiki;
 const Collaborator = require("./models").Collaborator;
 
 const bcrypt = require("bcryptjs");
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 
@@ -20,24 +21,33 @@ module.exports = {
       })
       .then((user) => {
 
-        callback(null, user);
+          const msg = {
+            to: user.email,
+            from: 'brandoncrichie@gmail.com',
+            subject: 'User Confirmation',
+            text: 'Confirm your Blocipedia account.',
+            html: '<strong>Confirmation required!</strong>',
+          };
+          sgMail.send(msg);
+          callback(null, user);
+        })
+        
+      .catch((err) => {
+        callback(err);
+      })
+  },
+
+/*   getAllUsers(callback) {
+    let result = {};
+    return User.all()
+      .then(users => {
+        result['users'] = users;
+        callback(null, result);
       })
       .catch((err) => {
         callback(err);
-      });
-  },
-
-  // getAllUsers(callback) {
-  //   let result = {};
-  //   return User.all()
-  //     .then(users => {
-  //       result['users'] = users;
-  //       callback(null, result);
-  //     })
-  //     .catch((err) => {
-  //       callback(err);
-  //     })
-  //   },
+      })
+    }, */
 
   getUser(id, callback) {
     let result = {};
@@ -46,8 +56,8 @@ module.exports = {
         if (!user) {
           callback(404);
         } else {
-          result['user'] = user;
-          Collaborator.scope({ method: ["collaborationsFor", id]}).all()
+          result["user"] = user;
+          Collaborator.scope({ method: ["userCollaborationsFor", id]}).all()
           .then((collaborations) => {
             result["collaborations"] = collaborations;
           callback(null, result);

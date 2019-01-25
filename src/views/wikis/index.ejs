@@ -6,28 +6,32 @@
 </head>
 
 <body>
+  <% include ../static/partials/navbar.ejs %>
+
   <main class="container">
-    <% include ../static/partials/navbar.ejs %>
+    <% include ../static/partials/messages.ejs %>
+
     <h1>Wikis</h1>
+
+    <% if(!currentUser) { %>
+    <small>Sign up. Sign in. Create your own wiki. </small>
+    <% } %>
+
     <% if(currentUser) { %>
+    <p>You got something to say?</p>
     <a href="/wikis/new" class="btn btn-success">New Wiki</a>
     <% } %>
     <ul class="list-group">
-
       <% wikis.forEach((wiki) => { %>
-      <% if(wiki.private  === false ) { %>
-
+      <% if(wiki.private === false) { %>
       <li class="list-group-item">
         <a href="/wikis/<%= wiki.id %>">
-          <%= wiki.title %> </a>
-
-
+          <%- wiki.title %> </a>
       </li>
       <% } %>
       <% }) %>
     </ul>
   </main>
-
 </body>
 
 </html>

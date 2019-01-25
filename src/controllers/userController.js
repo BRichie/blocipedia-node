@@ -2,13 +2,11 @@ const userQueries = require("../db/queries.users.js");
 const passport = require("passport");
 const wikiQueries = require("../db/queries.wikis.js");
 const User = require("../db/models").User;
-
 const stripeSecret = process.env.STRIPE_TEST_API_KEY;
-const sgMail = require('@sendgrid/mail');
+
 const stripe = require("stripe")(stripeSecret);
 
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 module.exports = {
@@ -21,30 +19,19 @@ module.exports = {
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm
     };
-
     userQueries.createUser(newUser, (err, user) => {
-      const msg = {
-        to: newUser.email,
-        from: 'lebron@lakeshow.com',
-        subject: 'User Confirmation',
-        text: 'Confirm your Blocipedia account.',
-        html: '<strong>Confirmation required!</strong>',
-      };
-
       if (err) {
-        req.flash("error", "Email address and/or Username already in use");
-        res.redirect("/users/sign_up");
+          req.flash("error", err);
+          res.redirect("/users/sign_up");
       } else {
 
         passport.authenticate("local")(req, res, () => {
           req.flash("notice", `Success!!  ${user.username}  , You've successfully signed up!`);
-          sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-          sgMail.send(msg);
-
+        
           res.redirect("/");
         })
       }
-    });
+    })
   },
   signUp(req, res, next) {
     res.render("users/sign_up");
@@ -63,7 +50,7 @@ module.exports = {
         res.redirect("/users/sign_in");
       } else {
         req.flash("notice", "You've successfully signed in!");
-        res.redirect("/");
+        res.redirect("/wikis");
       }
     })
   },
@@ -76,15 +63,19 @@ module.exports = {
 
 
   show(req, res, next) {
-    userQueries.getUser(req.params.id, (err, user) => {
-      if(err || user === null) {
-        req.flash("notice", "No user found with that ID");
-        res.redirect("/");
-      } else {
-        res.render("users/show", {user});
-      }
-    });
+    res.render("users/show");
   },
+  //   userQueries.getUser(req.params.id, (err, user) => {
+  //     if (err || user === undefined) {
+  //       req.flash("notice", "No user found with that ID");
+  //       res.redirect("/");
+  //     } else {
+  //       res.render("users/show", {
+  //         user
+  //       });
+  //     }
+  //   });
+  // },
   upgrade(req, res, next) {
     const token = req.body.stripeToken;
 
@@ -113,7 +104,7 @@ module.exports = {
     userQueries.getUser(req.user.id, (err, result) => {
       user = result["user"];
       collaborations = result["collaborations"];
-      if (err || result.user == null) {
+      if (err || result == null) {
         res.redirect(404, "/");
       } else {
         res.render("users/collaborations", {

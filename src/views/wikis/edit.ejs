@@ -10,46 +10,35 @@
 
   <main class="container">
 
-    <% include ../static/partials/messages.ejs %>
-
-
     <h1>Edit Wiki</h1>
 
+    <!-- #1 -->
     <form action="/wikis/<%= wiki.id %>/update" method="post">
       <div class="form-group">
         <label for="title">Wiki Title</label>
+        <!-- #2 -->
         <input value="<%= wiki.title %>" type="text" class="form-control" name="title" aria-describedby="titleHelp"
           placeholder="Enter Title">
       </div>
       <div class="form-group">
         <label for="body">Body</label>
+        <!-- #3 -->
         <textarea rows="4" class="form-control" name="body" placeholder="Enter Body"><%= wiki.body %></textarea>
       </div>
-
-
-
-      <!-- Make private/public button -->
-      <% if(currentUser &&  currentUser.isPremium() || currentUser.isAdmin() && wiki.userId === currentUser.id ) { %>
+      <% if(currentUser && (currentUser.role === "premium" || currentUser.role === 'admin') && wiki.userId === currentUser.id) { %>
+      <p>Change Public/Private?</p>
       <div class="form-group">
-        <label for="private">Wiki status</label>
-        <select class="form-control" name="private" type="checkbox">
+        <label for="private">Wiki Status</label>
+        <select class="form-control" name="private">
           <option value="false">Public</option>
           <option value="true">Private</option>
         </select>
-
-
       </div>
       <% } %>
-      <!-- Make private/public button -->
-
-      <% include ../collaborators/show.ejs %>
-
       <button type="submit" class="btn btn-primary">Update</button>
     </form>
   </main>
-
   <% include ../static/partials/baseScripts.ejs %>
-
 </body>
 
 </html>

@@ -1,57 +1,49 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
+ 
 
+    
     username: {
-      type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      type: DataTypes.STRING
     },
     email: {
-      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
-        isEmail: {
-          msg: "Must be a valid Email"
-        }
-      }
+        isEmail: { msg: "must be a valid email"} 
+      },
+      type: DataTypes.STRING,
     },
     password: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
+      allowNull: false,
+      type: DataTypes.STRING
+    }, 
     role: {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: "standard"
     }
-
   }, {});
-  User.associate = function (models) {
-
+  User.associate = function(models) {
     User.hasMany(models.Wiki, {
       foreignKey: "userId",
       as: "wikis"
     });
-
     User.hasMany(models.Collaborator, {
       foreignKey: "userId",
       as: "collaborators"
     });
-
-
-    User.prototype.isAdmin = function () {
-      return this.role === "admin";
-    };
-    User.prototype.isPremium = function () {
-      return this.role === "premium";
-    };
-    User.prototype.isStandard = function () {
-      return this.role === "standard";
-
-
-    };
-    // associations can be defined here
+  };
+  User.prototype.isAdmin = function() {
+    return this.role === "admin";
+  };
+  User.prototype.isStandard = function () {
+    return this.role === "standard";
+  };
+  User.prototype.isPremium = function() {
+    return this.role === "premium";
   };
   return User;
 };
