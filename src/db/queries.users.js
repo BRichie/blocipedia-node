@@ -1,11 +1,9 @@
 const User = require("./models").User;
 const Collaborator = require("./models").Collaborator;
-
+const Wiki = require("./models").Wiki;
 const bcrypt = require("bcryptjs");
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-
 
 
 module.exports = {
@@ -20,13 +18,15 @@ module.exports = {
         password: hashedPassword
       })
       .then((user) => {
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 
           const msg = {
-            to: user.email,
+            to: newUser.email,
             from: 'brandoncrichie@gmail.com',
             subject: 'User Confirmation',
-            text: 'Confirm your Blocipedia account.',
-            html: '<strong>Confirmation required!</strong>',
+            text: 'Salutations for signing up for a Blocipedia account.',
+            html: '<strong>Thank you for joining!</strong>',
           };
           sgMail.send(msg);
           callback(null, user);
@@ -34,7 +34,7 @@ module.exports = {
         
       .catch((err) => {
         callback(err);
-      })
+      });
   },
 
 /*   getAllUsers(callback) {
@@ -52,7 +52,8 @@ module.exports = {
   getUser(id, callback) {
     let result = {};
     User.findById(id)
-      .then((user) => {
+    .then((user) => {
+    
         if (!user) {
           callback(404);
         } else {
@@ -64,13 +65,13 @@ module.exports = {
           })
           .catch((err) => {
             callback(err);
-          })
+          });
         }
-      })
+      });
     },
 
-  upgradeRole(req, callback) {
-    return User.findById(req.user.id)
+  upgrade(req, callback) {
+    return User.findById(req.params.id)
       .then((user) => {
         if (!user) {
           return callback("404");
@@ -92,8 +93,8 @@ module.exports = {
       })
   },
 
-  downgradeRole(req, callback) {
-    return User.findById(req.user.id)
+  downgrade(req, callback) {
+    return User.findById(req.params.id)
       .then((user) => {
         if (!user) {
           return callback("User not found");
@@ -115,4 +116,4 @@ module.exports = {
           })
       })
   }
-}
+};

@@ -8,16 +8,36 @@ const Authorizer = require("../policies/application");
 
 module.exports = {
 
-    getAllWikis(callback) {
-        return Wiki.all()
+    allPublicWikis(callback) {
+        return Wiki.findAll({
+                where: {
+                    private: false,
+                }
+            })
             .then((wikis) => {
                 callback(null, wikis);
             })
             .catch((err) => {
                 callback(err);
-            })
+            });
     },
-    getWiki(id, callback) {
+
+    allPrivateWikis(callback) {
+        return Wiki.findAll({
+                where: {
+                    private: true,
+                }
+            })
+
+            .then((wikis) => {
+                callback(null, wikis);
+            })
+            .catch((err) => {
+                callback(err);
+            });
+    },
+
+     getWiki(id, callback) {
         let result = {};
         Wiki.findById(id)
             .then((wiki) => {
@@ -45,22 +65,18 @@ module.exports = {
 
 
 
+    
     addWiki(newWiki, callback) {
-        return Wiki.create({
-                title: newWiki.title,
-                body: newWiki.body,
-                private: newWiki.private,
-                userId: newWiki.userId
-            })
-            .then((wikis) => {
-                callback(null, wikis);
-            })
-            .catch((err) => {
-                callback(err);
-            })
-    },
-
-    deleteWiki(req, callback) {
+        return Wiki.create(newWiki)
+          .then(wiki => {
+            callback(null, wiki);
+          })
+          .catch(err => {
+            callback(err);
+          });
+      },
+    
+    destroyWiki(req, callback) {
 
         return Wiki.findById(req.params.id)
             .then((wiki) => {
@@ -81,16 +97,13 @@ module.exports = {
             });
     },
 
-    updateWiki(req, updatedWiki, callback) {
-        return Wiki.findById(req.params.id)
+    updateWiki(id, updatedWiki, callback) {
+        return Wiki.findById(id)
             .then((wiki) => {
 
                 if (!wiki) {
                     return callback("No Wikis Located");
                 }
-                const authorized = new Authorizer(req.user, wiki).update();
-
-                if (authorized) {
 
 
                 wiki.update(updatedWiki, {
@@ -101,12 +114,9 @@ module.exports = {
                     })
                     .catch((err) => {
                         callback(err);
-                      });
-
-
-            }
-    })
-},
+                    });
+            })
+    },
 
     wikiNowPrivate(id) {
         return Wiki.all()

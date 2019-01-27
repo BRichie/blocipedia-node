@@ -1,6 +1,8 @@
-const userQueries = require("../db/queries.users.js");
+
+
+const userQueries = require("../db/queries.users");
 const passport = require("passport");
-const wikiQueries = require("../db/queries.wikis.js");
+const wikiQueries = require("../db/queries.wikis");
 const User = require("../db/models").User;
 const stripeSecret = process.env.STRIPE_TEST_API_KEY;
 
@@ -10,6 +12,21 @@ const stripe = require("stripe")(stripeSecret);
 
 
 module.exports = {
+
+  show(req, res, next) {
+  
+    userQueries.getUser(req.params.id, (err, user) => {
+      if (err || user === undefined) {
+        req.flash("notice", "No user found with that ID");
+        res.redirect("/");
+      } else {
+        res.render("users/show", {
+          user
+        });
+      }
+    });
+  },
+ 
 
 
   create(req, res, next) {
@@ -50,9 +67,9 @@ module.exports = {
         res.redirect("/users/sign_in");
       } else {
         req.flash("notice", "You've successfully signed in!");
-        res.redirect("/wikis");
+        res.redirect("/");
       }
-    })
+    });
   },
 
   signOut(req, res, next) {
@@ -61,21 +78,6 @@ module.exports = {
     res.redirect("/");
   },
 
-
-  show(req, res, next) {
-    res.render("users/show");
-  },
-  //   userQueries.getUser(req.params.id, (err, user) => {
-  //     if (err || user === undefined) {
-  //       req.flash("notice", "No user found with that ID");
-  //       res.redirect("/");
-  //     } else {
-  //       res.render("users/show", {
-  //         user
-  //       });
-  //     }
-  //   });
-  // },
   upgrade(req, res, next) {
     const token = req.body.stripeToken;
 
@@ -86,7 +88,7 @@ module.exports = {
       source: token,
     })
 
-    userQueries.upgradeRole(req, (err, user) => {
+    userQueries.upgrade(req, (err, user) => {
       if (err || user.id === undefined) {
         req.flash("notice", "Upgrade Unsuccessful.");
         res.redirect("users/paymentDecline");
@@ -100,11 +102,10 @@ module.exports = {
   },
 
   showCollaborations(req, res, next) {
-    console.log(req.user.id);
     userQueries.getUser(req.user.id, (err, result) => {
       user = result["user"];
       collaborations = result["collaborations"];
-      if (err || result == null) {
+      if (err || user == null) {
         res.redirect(404, "/");
       } else {
         res.render("users/collaborations", {
@@ -116,7 +117,7 @@ module.exports = {
   },
 
   downgrade(req, res, next) {
-    userQueries.downgradeRole(req, (err, user) => {
+    userQueries.downgrade(req, (err, user) => {
       if (err || user.id === undefined) {
         req.flash("notice", "Downgrade Declined.");
         res.redirect("users/show");

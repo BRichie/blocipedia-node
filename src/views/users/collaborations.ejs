@@ -1,33 +1,32 @@
+
 <!DOCTYPE html>
 <html>
 
 <head>
-  <% include ../static/partials/head.ejs %>
+    <% include ../static/partials/head.ejs %>
 </head>
 
 <body>
-  <% include ../static/partials/navbar.ejs %>
-  
-  <br>
-  
-  <main class="container">
-    
-    <% include ../static/partials/messages.ejs %>
-    
-    <h1> Collaborations </h1>
-  
-      
-        <ul class="list-group">
-        <% collaborations.forEach((collaboration) => {  %>
-        <li class="list-group-item">
-          <a href="/wikis/<%= collaboration.wikiId %>">
-            <%= collaboration.Wiki.title %></a>
-        </li>
+    <% include ../static/partials/navbar.ejs %>
+    <main class="container">
+        <% include ../static/partials/messages.ejs %>
+        
+        
+        <h1> Collaborations</h1>
+        <p>
+            <ul class="list-group">
+                <% collaborations.forEach((collaboration) => {  %>
+                <li class="list-group-item">
+                    <a href="/wikis/<%= collaboration.Wiki.id %>">
+                        <%= collaboration.Wiki.title %></a>
+                </li>
+                
+            </ul>
+        </p>
+        <% } else { %>
+        <p class="lead">You are not a collaborator on any wikis!</p>
         <% }) %>
-      </ul>
-    
-  </main>
-
+    </main>
 </body>
 
 </html>

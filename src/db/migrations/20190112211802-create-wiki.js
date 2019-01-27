@@ -18,21 +18,29 @@ module.exports = {
       },
       private: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false,
        },
-    
+       userId: {
+        type: Sequelize.INTEGER,
+        onDelete: "CASCADE", // delete post if parent user is deleted
+        allowNull: false,    
+        references: {        
+          model: "Users",   // table name
+          key: "id",         
+          as: "userId"      
+        }
+      },
 
-      createdAt: {
+    createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
 
-    });
-  },
+  });
+},
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Wikis');
   }

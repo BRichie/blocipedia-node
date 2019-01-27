@@ -2,9 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   var User = sequelize.define('User', {
  
-
-    
-    username: {
+username: {
       allowNull: false,
       type: DataTypes.STRING
     },
@@ -27,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {});
   User.associate = function(models) {
+    
     User.hasMany(models.Wiki, {
       foreignKey: "userId",
       as: "wikis"

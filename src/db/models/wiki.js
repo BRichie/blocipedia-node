@@ -3,6 +3,7 @@
 
 module.exports = (sequelize, DataTypes) => {
   var Wiki = sequelize.define('Wiki', {
+    
     title: {
       type: DataTypes.STRING,
       allowNull: false
@@ -13,13 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     private: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
       defaultValue: false
+  
     },
-    userId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    }
+
+  
 
   }, {});
   Wiki.associate = function (models) {
@@ -32,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     Wiki.hasMany(models.Collaborator, {
       foreignKey: "wikiId",
       as: "collaborators"
-    })
+    }); 
   };
   return Wiki;
 };

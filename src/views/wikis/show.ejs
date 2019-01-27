@@ -11,11 +11,10 @@
   <main class="container">
     <% include ../static/partials/messages.ejs %>
     <h1>
-      <%= wiki.title %>
+      <% wiki.title %>
     </h1>
     <% if(currentUser) { %>
         <!-- <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a> -->
-
           <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
@@ -51,7 +50,6 @@
                 <li class="list-group-item">
                   <%= collaborator.User.username %>
                   <% if(currentUser && (currentUser.role === "premium" || currentUser.role === "admin")) { %>
-                    <form style="float:right" style="float:top" style="width:25%" action="/wikis/<%= collaborator.wikiId %>/collaborators/<%= collaborator.id %>/delete"
                       method="post">
                       <button type="submit" class="btn btn-danger">Delete</button>
                       <input type="hidden" value="<%= collaborator.User.id %>" class="form-control" name="collaborator">
@@ -70,5 +68,3 @@
 </html>
 
  
-     
-     

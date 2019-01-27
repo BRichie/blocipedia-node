@@ -1,15 +1,19 @@
+const express = require("express");
+const router = express.Router();
 const wikiQueries = require("../db/queries.wikis.js");
 const markdown = require("markdown").markdown;
 const Authorizer = require("../policies/application");
 
 
 module.exports = {
-  index(req, res, next) {
-    wikiQueries.getAllWikis((err, wikis) => {
+  
+  
+  public(req, res, next) {
+    wikiQueries.allPublicWikis((err, wikis) => {
       if (err) {
         res.redirect(500, "static/index");
       } else {
-        res.render("wikis/index", {
+        res.render("wikis", {
           wikis
         });
       }
@@ -17,7 +21,7 @@ module.exports = {
   },
 
   private(req, res, next) {
-    wikiQueries.getAllWikis((err, wikis) => {
+    wikiQueries.allPrivateWikis((err, wikis) => {
       if (err) {
         res.redirect(500, "static/index");
       } else {
@@ -27,7 +31,6 @@ module.exports = {
       }
     })
   },
-
   new(req, res, next) {
     const authorized = new Authorizer(req.user).new();
     if (authorized) {
@@ -63,7 +66,7 @@ module.exports = {
       wiki = result["wiki"];
       collaborators = result["collaborators"];
 
-      if (err || wiki == null) {
+      if (err || result.wiki == null) {
         res.redirect(404, "/");
       } else {
         wiki.body = markdown.toHTML(wiki.body);
