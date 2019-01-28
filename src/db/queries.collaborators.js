@@ -1,23 +1,22 @@
-const Collaborator = require("./models").Collaborator;
-const Wiki = require("./models").Wiki;
-const User = require("./models").User;
 const Authorizer = require("../policies/application");
-
+const User = require('./models').User;
+const Wiki = require('./models').Wiki;
+const Collaborator = require('./models').Collaborator;
 
 module.exports = {
 
     create(req, callback) {
-     if (req.user.username == req.body.collaborator) {
+        if (req.user.username == req.body.collaborator) {
             return callback("You cannot add yourself as a collaborator");
-         }
+        }
 
         User.findOne({
                 where: {
                     username: req.body.collaborator
                 }
             })
-            .then((users) => {
-                if (!users) {
+            .then((user) => {
+                if (!user) {
                     return callback("User does not exist")
                 }
 
@@ -27,55 +26,44 @@ module.exports = {
                             wikiId: req.params.wikiId
                         }
                     })
-                    .then((collaborators) => {
-                        if (collaborators.length != 0) {
-                            return callback(`${
-                                req.body.collaborator
-                              } is a collaborator.`
-                            );
+                    .then((collaborator) => {
+                        if (collaborator) {
+                            return callback("Already a collaborator")
                         }
 
                         let newCollaborator = {
                             userId: user.id,
                             wikiId: req.params.wikiId
                         };
-                        return Collaborator.create({
-                            userId: user.id,
-                            wikiId: req.params.wikiId
-                        })
+                        return Collaborator.create(newCollaborator)
                         .then((collaborator) => {
-                            callback(null, collaborator);
+                          callback(null, collaborator);
                         })
-                  
+                            .then((collaborator) => {
+                                callback(null, collaborator);
+                            })
+
                             .catch((err) => {
-                                callback(err, null);
+                                callback("Unable to locate");
                             });
-                        })
-                        .catch((err) => {
-                          callback(err, null);
-                        });
                     })
-                    .catch((err) => {
-                      callback(err, null);
-                    });
-                },
-                   
-    
+
+            });
+
+    },
+
+
     remove(req, callback) {
         let collaboratorId = req.body.collaborator;
         let wikiId = req.params.wikiId;
-
-        const authorized = new Authorizer(req.user, wiki, collobaratorId).destroy();
-
+        const authorized = new Authorizer(req.user, wiki, collaboratorId).destroy();
         if (authorized) {
-
-                Collaborator.destroy({
-                    where: {
-                        userId: collaboratorId,
-                        wikiId: wikiId
-
-                    }
-                })
+          Collaborator.destroy({
+            where: {
+              userId: collaboratorId,
+              wikiId: wikiId
+            }
+          })
                 .then((deletedRecord) => {
                     callback(null, deletedRecord);
                 })

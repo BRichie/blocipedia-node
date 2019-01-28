@@ -1,9 +1,9 @@
 module.exports = class ApplicationPolicy {
 
-  constructor(user, record, collaborator) {
+  constructor(user, record, collaborators) {
     this.user = user;
     this.record = record;
-    this.collaborator = collaborator;
+    this.collaborators = collaborators;
 
 
   }

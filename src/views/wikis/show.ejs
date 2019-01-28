@@ -11,10 +11,9 @@
   <main class="container">
     <% include ../static/partials/messages.ejs %>
     <h1>
-      <% wiki.title %>
+      <%- wiki.title %>
     </h1>
     <% if(currentUser) { %>
-        <!-- <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a> -->
           <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
@@ -35,13 +34,13 @@
           </form>
           <% } %>
           <% if(wiki.private) { %>
-              <a href="/wikis/<%= wiki.id %>/collaborators" class="btn btn-info">Edit Collaborators</a>
+              <a href="/wikis/<%= wiki.id %>/collaborators/" class="btn btn-info">Edit Collaborators</a>
           <% } %>
           <p>
               <%- wiki.body %>
           </p>
 
-          <div class='collabs' style='bottom: 0' style='bottom: 0px'>
+          
               <p>Collaborators for this wiki:</p>
               <% if(wiki.collaborators) { %>
               <ul class="list-group">
@@ -50,9 +49,10 @@
                 <li class="list-group-item">
                   <%= collaborator.User.username %>
                   <% if(currentUser && (currentUser.role === "premium" || currentUser.role === "admin")) { %>
-                      method="post">
+                    <form action="/wikis/<%= wiki.id %>/collaborators/remove" method="post">
                       <button type="submit" class="btn btn-danger">Delete</button>
                       <input type="hidden" value="<%= collaborator.User.id %>" class="form-control" name="collaborator">
+                    </div>
                     </form>
                   <% } %>
                 </li>

@@ -9,7 +9,7 @@
   <% include ../static/partials/navbar.ejs %>
   <main class="container">
     <% include ../static/partials/messages.ejs %>
-   
+    <% if(wiki.private == true)  { %>
     <h2> Collaborators </h2>
     <% if(collaborators) { %>
     <p>
@@ -27,7 +27,7 @@
         <% }) %>
       </ul>
     </p>
-
+    <% } %>
     <% if(currentUser && (currentUser.role === "premium" || currentUser.role === "admin")) { %>
     <form action="/wikis/<%= wiki.id %>/collaborators/create" method="post">
       <div class="input-group">

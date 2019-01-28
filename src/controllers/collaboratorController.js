@@ -12,7 +12,7 @@ module.exports = {
     if (err) {
       req.flash("error", err);
     }
-    res.redirect(req.headers.referrer);
+    res.redirect(`/wikis/${req.params.wikiId}/collaborators`);
   });
 },
 
@@ -44,11 +44,11 @@ edit(req, res, next) {
         if (err) {
           req.flash("error", err);
         }
-        res.redirect(req.headers.referrer);
+        res.redirect(`/wikis/${req.params.wikiId}/collaborators`);
       });
     } else {
       req.flash("notice", "You must be signed in to remove Collaborators!");
-      res.redirect(req.headers.referrer);
+      res.redirect("/");
     }
   }
 };

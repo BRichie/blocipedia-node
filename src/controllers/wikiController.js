@@ -65,8 +65,7 @@ module.exports = {
     wikiQueries.getWiki(req.params.id, (err, result) => {
       wiki = result["wiki"];
       collaborators = result["collaborators"];
-
-      if (err || result.wiki == null) {
+          if (err || wiki == null) {
         res.redirect(404, "/");
       } else {
         wiki.body = markdown.toHTML(wiki.body);
@@ -77,17 +76,6 @@ module.exports = {
       }
     });
   },
-
-  destroy(req, res, next) {
-    wikiQueries.deleteWiki(req, (err, wiki) => {
-      if (err) {
-        res.redirect(500, `/wikis/${req.params.id}`)
-      } else {
-        res.redirect(303, "/wikis")
-      }
-    });
-  },
-
   edit(req, res, next) {
 
     wikiQueries.getWiki(req.params.id, (err, result) => {
@@ -95,7 +83,7 @@ module.exports = {
       wiki = result["wiki"];
       collaborators = result["collaborators"];
 
-      if (err || wiki == null) {
+      if (err || result.wiki == null) {
         res.redirect(404, "/");
       } else {
         const authorized = new Authorizer(req.user, wiki, collaborators).edit();
@@ -113,12 +101,24 @@ module.exports = {
     });
   },
 
+  destroy(req, res, next) {
+    wikiQueries.deleteWiki(req, (err, wiki) => {
+      if (err) {
+        res.redirect(500, `/wikis/${wiki.id}`)
+      } else {
+        res.redirect(303, "/wikis")
+      }
+    });
+  },
+
+ 
+
   update(req, res, next) {
-    wikiQueries.updateWiki(req.params.id, req.body, (err, wiki) => {
+    wikiQueries.updateWiki(req.params_id, req.body, (err, wiki) => {
       if (err || wiki == null) {
         res.redirect(401, `/wikis/${req.params.id}/edit`);
       } else {
-        res.redirect(`/wikis/${wiki.id}`);
+        res.redirect(`/wikis/${wiki.params.id}`);
       }
     });
   }

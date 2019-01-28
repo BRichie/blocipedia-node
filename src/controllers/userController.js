@@ -13,7 +13,7 @@ const stripe = require("stripe")(stripeSecret);
 
 module.exports = {
 
-  show(req, res, next) {
+  /* show(req, res, next) {
   
     userQueries.getUser(req.params.id, (err, user) => {
       if (err || user === undefined) {
@@ -25,7 +25,7 @@ module.exports = {
         });
       }
     });
-  },
+  }, */
  
 
 
