@@ -19,9 +19,9 @@ module.exports = {
 show(req, res, next) {
 
   userQueries.getUser(req.params.id, (err, result) => {
-    let wiki = result["wiki"];
-    let collaborators = result["collaborators"];
-        if (err || wiki == null) {
+     wiki = result["wiki"];
+     collaborators = result["collaborators"];
+        if (err || wiki == undefined) {
       res.redirect(404, "/");
     } else {
         const authorized = new Authorizer(

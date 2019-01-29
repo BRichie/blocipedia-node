@@ -15,14 +15,14 @@ module.exports = {
                     username: req.body.collaborator
                 }
             })
-            .then((users) => {
-                if (!users) {
+            .then((user) => {
+                if (!user) {
                     return callback("User does not exist")
                 }
 
                 Collaborator.findOne({
                         where: {
-                            userId: users.id,
+                            userId: user.id,
                             wikiId: req.params.wikiId
                         }
                     })
@@ -32,7 +32,7 @@ module.exports = {
                         }
 
                         let newCollaborator = {
-                            userId: users.id,
+                            userId: user.id,
                             wikiId: req.params.wikiId
                         };
                         return Collaborator.create(newCollaborator)

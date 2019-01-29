@@ -13,7 +13,7 @@ const stripe = require("stripe")(stripeSecret);
 
 module.exports = {
 
-  /* show (req, res, next) {
+   show (req, res, next) {
 		// Call the getUser method, pass it the ID of the user we are trying to visit
 		userQueries.getUser(req.user.id, (err, result) => {
 			// getUser will send back an object. If the user property of result is not defined that means no user with the passed ID was found.
@@ -23,11 +23,11 @@ module.exports = {
 				req.flash('notice', 'No user found with that ID.');
 				res.redirect(404, '/');
 			} else {
-				res.render('users/collaborations', { user, collaborations });
+				res.render('users/show', { user, collaborations });
 			}
 		});
 	},
- */
+ 
 
 index(req, res, next) {
   res.render("/");

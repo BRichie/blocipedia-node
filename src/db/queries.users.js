@@ -21,54 +21,56 @@ module.exports = {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
-          const msg = {
-            to: newUser.email,
-            from: 'brandoncrichie@gmail.com',
-            subject: 'User Confirmation',
-            text: 'Salutations for signing up for a Blocipedia account.',
-            html: '<strong>Thank you for joining!</strong>',
-          };
-          sgMail.send(msg);
-          callback(null, user);
-        })
-        
+        const msg = {
+          to: newUser.email,
+          from: 'brandoncrichie@gmail.com',
+          subject: 'User Confirmation',
+          text: 'Salutations for signing up for a Blocipedia account.',
+          html: '<strong>Thank you for joining!</strong>',
+        };
+        sgMail.send(msg);
+        callback(null, user);
+      })
+
       .catch((err) => {
         callback(err);
       });
   },
 
-/*   getAllUsers(callback) {
-    let result = {};
-    return User.all()
-      .then(users => {
-        result['users'] = users;
-        callback(null, result);
-      })
-      .catch((err) => {
-        callback(err);
-      })
-    }, */
-
-    getUser(id, callback) {
+  /*   getAllUsers(callback) {
       let result = {};
-     return User.findById(id).then(user => {
-        if (!user) {
-          callback(404);
-        } else {
-          result["user"] = user;
-          Collaborator.scope({ method: ["userCollaborationsFor", id] })
-            .all()
-            .then((collaborations) => {
-              result["collaborations"] = collaborations;
-              callback(null, result);
-            })
-            .catch((err) => {
-              callback(err);
-            });
-        }
-      });
-    },
-  
+      return User.all()
+        .then(users => {
+          result['users'] = users;
+          callback(null, result);
+        })
+        .catch((err) => {
+          callback(err);
+        })
+      }, */
+
+  getUser(id, callback) {
+    let result = {};
+    User.findById(id).then(user => {
+      if (!user) {
+        callback(404);
+      } else {
+        result["user"] = user;
+        Collaborator.scope({
+            method: ["userCollaborationsFor", id]
+          })
+          .all()
+          .then((collaborations) => {
+            result["collaborations"] = collaborations;
+            callback(null, result);
+          })
+          .catch((err) => {
+            callback(err);
+          });
+      }
+    });
+  },
+
   upgrade(req, callback) {
     return User.findById(req.params.id)
       .then((user) => {
