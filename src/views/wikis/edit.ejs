@@ -38,11 +38,13 @@
       <button type="submit" class="btn btn-primary">Update</button>
     </form>
 
-    <% if(currentUser && (currentUser.id == wiki.userId || currentUser && currentUser.isAdmin())) { %>
+    <% if ((wiki.private == true) && currentUser && (currentUser.role === 'admin' || (currentUser.role === 'premium' && currentUser.id === wiki.userId))){%>
+      <form action="/wikis/<%= wiki.id %>/collaborators" method="post">
       <a href='/wikis/<%= wiki.id %>/collaborators' class="btn btn-info">Edit Collaborators</a>
-      <% } %>
-    </main>
-  
+      </form>
+   <% }%>
+    
+  </main>
   <% include ../static/partials/baseScripts.ejs %>
 </body>
 

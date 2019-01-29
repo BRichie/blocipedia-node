@@ -20,7 +20,6 @@
         <% } %>
    
         <% if(wiki.private) { %>
-          <p>This wiki is private. Only Premium members may edit private wikis.</p>
           <% if(currentUser.isPremium() || currentUser.isAdmin()) { %>
           <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit Wiki</a>
           <% } %>
@@ -34,7 +33,7 @@
           </form>
           <% } %>
           <% if(wiki.private) { %>
-              <a href="/wikis/<%= wiki.id %>/collaborators/" class="btn btn-info">Edit Collaborators</a>
+              <a href="/wikis/<%= wiki.id %>/collaborators" class="btn btn-info">Edit Collaborators</a>
           <% } %>
           <p>
               <%- wiki.body %>

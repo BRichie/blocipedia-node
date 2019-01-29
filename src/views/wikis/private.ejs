@@ -15,6 +15,8 @@
         <% if(currentUser) { %>
         <a href="/wikis/new" class="btn btn-success">New Wiki</a>
         <% } %>
+
+        
         <ul class="list-group">
             <% wikis.forEach((wiki) => { %>
             <li class="list-group-item">
@@ -26,7 +28,10 @@
                 <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
+
+                
                 <% } %>
+
             </li>
             <% }) %>
         </ul>

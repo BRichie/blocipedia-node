@@ -9,9 +9,11 @@
   <% include ../static/partials/navbar.ejs %>
   <main class="container">
     <% include ../static/partials/messages.ejs %>
-    <% if(wiki.private == true)  { %>
-    <h2> Collaborators </h2>
-    <% if(collaborators) { %>
+    <% if(wiki.private)  { %>
+    
+      <h2> Collaborators </h2>
+    
+      <% if(collaborators) { %>
     <p>
       <ul class="list-group">
         <% collaborators.forEach((collaborator) => {  %>
@@ -35,6 +37,8 @@
         <button type="submit" class="btn btn-primary">Add</button>
       </div>
     </form>
+
+    
     <% } %>
     <% } %>
   </main>

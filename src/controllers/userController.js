@@ -13,22 +13,25 @@ const stripe = require("stripe")(stripeSecret);
 
 module.exports = {
 
-  /* show(req, res, next) {
-  
-    userQueries.getUser(req.params.id, (err, user) => {
-      if (err || user === undefined) {
-        req.flash("notice", "No user found with that ID");
-        res.redirect("/");
-      } else {
-        res.render("users/show", {
-          user
-        });
-      }
-    });
-  }, */
- 
+  /* show (req, res, next) {
+		// Call the getUser method, pass it the ID of the user we are trying to visit
+		userQueries.getUser(req.user.id, (err, result) => {
+			// getUser will send back an object. If the user property of result is not defined that means no user with the passed ID was found.
+			user = result['user'];
+			collaborations = result['collaborations'];
+			if (err || result === undefined) {
+				req.flash('notice', 'No user found with that ID.');
+				res.redirect(404, '/');
+			} else {
+				res.render('users/collaborations', { user, collaborations });
+			}
+		});
+	},
+ */
 
-
+index(req, res, next) {
+  res.render("/");
+},
   create(req, res, next) {
     let newUser = {
       username: req.body.username,
@@ -77,7 +80,8 @@ module.exports = {
     req.flash("notice", "You've successfully signed out!");
     res.redirect("/");
   },
-
+  
+  
   upgrade(req, res, next) {
     const token = req.body.stripeToken;
 
@@ -103,11 +107,15 @@ module.exports = {
 
   showCollaborations(req, res, next) {
     userQueries.getUser(req.user.id, (err, result) => {
-      user = result["user"];
-      collaborations = result["collaborations"];
+      let user = result["user"];
+      //console.log(result['user']);
+      let collaborations = result["collaborations"];
+      //console.log("--DEBUG: showCollaborations#result--");
+    //console.dir(result);
       if (err || user == null) {
         res.redirect(404, "/");
       } else {
+     
         res.render("users/collaborations", {
           user,
           collaborations
@@ -120,7 +128,7 @@ module.exports = {
     userQueries.downgrade(req, (err, user) => {
       if (err || user.id === undefined) {
         req.flash("notice", "Downgrade Declined.");
-        res.redirect("users/show");
+        res.redirect("users/index");
       } else {
         wikiQueries.wikiNowPublic(req.user.dataValues.id);
         req.flash("notice", "Back to the basics.");

@@ -37,9 +37,9 @@ module.exports = {
             });
     },
 
-     getWiki(id, callback) {
+    getWiki(id, callback) {
         let result = {};
-        Wiki.findById(id)
+        return Wiki.findById(id)
             .then((wiki) => {
                 if (!wiki) {
                     callback(404);
@@ -63,19 +63,16 @@ module.exports = {
     },
 
 
-
-
-    
     addWiki(newWiki, callback) {
         return Wiki.create(newWiki)
-          .then(wiki => {
-            callback(null, wiki);
-          })
-          .catch(err => {
-            callback(err);
-          });
-      },
-    
+            .then(wiki => {
+                callback(null, wiki);
+            })
+            .catch(err => {
+                callback(err);
+            });
+    },
+
     destroyWiki(req, callback) {
 
         return Wiki.findById(req.params.id)

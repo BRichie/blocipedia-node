@@ -16,8 +16,7 @@
             <ul class="list-group">
                 <% collaborations.forEach((collaboration) => {  %>
                 <li class="list-group-item">
-                    <a href="/wikis/<%= collaboration.wikiId %>">
-                        <%= collaboration.Wiki.title %></a>
+                    <a href="/wikis/<%= collaboration.wikiId %>"><%= collaboration.title %></a>
                 </li>
                 <% }) %>
             </ul>

@@ -15,14 +15,14 @@ module.exports = {
                     username: req.body.collaborator
                 }
             })
-            .then((user) => {
-                if (!user) {
+            .then((users) => {
+                if (!users) {
                     return callback("User does not exist")
                 }
 
                 Collaborator.findOne({
                         where: {
-                            userId: user.id,
+                            userId: users.id,
                             wikiId: req.params.wikiId
                         }
                     })
@@ -32,7 +32,7 @@ module.exports = {
                         }
 
                         let newCollaborator = {
-                            userId: user.id,
+                            userId: users.id,
                             wikiId: req.params.wikiId
                         };
                         return Collaborator.create(newCollaborator)
@@ -43,14 +43,19 @@ module.exports = {
                                 callback(null, collaborator);
                             })
 
-                            .catch((err) => {
-                                callback("Unable to locate");
-                            });
-                    })
-
-            });
-
-    },
+                           
+							.catch(err => {
+								callback(err, null);
+							});
+					})
+					.catch(err => {
+						callback(err, null);
+					});
+			})
+			.catch(err => {
+				callback(err, null);
+			});
+	},
 
 
     remove(req, callback) {

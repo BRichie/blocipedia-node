@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const wikiQueries = require("../db/queries.wikis.js");
-const collaboratorQueries = require("../db/queries.collaborators.js");
+const wikiQueries = require("../db/queries.wikis");
+const userQueries = require("../db/queries.users")
+const collaboratorQueries = require("../db/queries.collaborators");
 const Authorizer = require("../policies/application");
 
 module.exports = {
@@ -15,11 +16,36 @@ module.exports = {
     res.redirect(`/wikis/${req.params.wikiId}/collaborators`);
   });
 },
+show(req, res, next) {
+
+  userQueries.getUser(req.params.id, (err, result) => {
+    let wiki = result["wiki"];
+    let collaborators = result["collaborators"];
+        if (err || wiki == null) {
+      res.redirect(404, "/");
+    } else {
+        const authorized = new Authorizer(
+          req.user,
+          wiki,
+          collaborators
+        ).showCollaborators();
+     
+        if (authorized) {
+          wiki.body = markdown.toHTML(wiki.body);
+          res.render("user/collaborations", { wiki, collaborators });
+        } else {
+          req.flash("notice", "You are not authorized to do that.");
+          res.redirect(`/wikis`);
+        }
+      }
+    });
+  },
 
 edit(req, res, next) {
   wikiQueries.getWiki(req.params.wikiId, (err, result) => {
-      wiki = result["wiki"];
-      collaborators = result["collaborators"];
+      
+    let wiki = result["wiki"];
+       let collaborators = result["collaborators"];
 
       if (err || result.wiki == null) {
           res.redirect(404, "/");

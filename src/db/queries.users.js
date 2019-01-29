@@ -51,7 +51,7 @@ module.exports = {
 
     getUser(id, callback) {
       let result = {};
-      User.findById(id).then(user => {
+     return User.findById(id).then(user => {
         if (!user) {
           callback(404);
         } else {
@@ -62,7 +62,7 @@ module.exports = {
               result["collaborations"] = collaborations;
               callback(null, result);
             })
-            .catch(err => {
+            .catch((err) => {
               callback(err);
             });
         }
