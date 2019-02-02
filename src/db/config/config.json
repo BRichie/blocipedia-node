@@ -2,7 +2,7 @@
   "development": {
     "username": "brandonrichie",
     "password": null,
-    "database": "blocipedia-dev",
+    "database": "mobclick-dev",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "logging": false,
@@ -12,7 +12,7 @@
   "test": {
     "username": "brandonrichie",
     "password": null,
-    "database": "blocipedia-test",
+    "database": "mobclick-test",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "logging": false,
