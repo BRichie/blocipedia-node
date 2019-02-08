@@ -1,5 +1,5 @@
 {
-  "name": "blocipedia-node",
+  "name": "mobclick",
   "version": "1.0.0",
   "description": " Application that allows users to create, collaborate and share wikis",
   "main": "src/server.js",
@@ -9,10 +9,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BRichie/blocipedia-node.git"
+    "url": "git+https://github.com/BRichie/mob_click.git"
   },
   "keywords": [
-    "blocipedia"
+    "mobClick"
   ],
   "author": "BcR",
   "license": "ISC",
