@@ -25,7 +25,7 @@ module.exports = {
           to: newUser.email,
           from: 'brandoncrichie@gmail.com',
           subject: 'User Confirmation',
-          text: 'Salutations for signing up for a Blocipedia account.',
+          text: 'Salutations for signing up for a mobClick account.',
           html: '<strong>Thank you for joining!</strong>',
         };
         sgMail.send(msg);
